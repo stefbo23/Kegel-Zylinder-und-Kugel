@@ -824,6 +824,169 @@ const units = [
     }
   },
 
+  // ─── OBERFLÄCHE KOMPLETT ──────────────────────────
+  {
+    learn: {
+      cat: 'z', catLabel: 'Zylinder',
+      emoji: '🎁',
+      title: 'Gesamte Oberfläche des Zylinders berechnen',
+      body: `Die Oberfläche setzt sich aus drei Teilen zusammen. Das Schulbuch zeigt es so:<br><br>
+             Du wickelst die Dose in Geschenkpapier ein und brauchst:`,
+      steps: [
+        { n: 1, text: '<strong>Grundfläche</strong> (Boden):  G = r² · π' },
+        { n: 2, text: '<strong>Deckfläche</strong> (Deckel):  G = r² · π  (gleich groß wie Boden)' },
+        { n: 3, text: '<strong>Mantelfläche</strong>:  M = 2 · π · r · h  (aufgerolltes Rechteck)' },
+        { n: 4, text: '<strong>Oberfläche gesamt</strong>:  O = 2 · r² · π + 2 · π · r · h' },
+      ],
+      highlight: { type: 'blue', title: '📋 Beispiel: r = 3 cm, h = 10 cm', text: 'G = 3² · π = 9π\nM = 2 · π · 3 · 10 = 60π\nO = 2 · 9π + 60π = 18π + 60π = 78π ≈ 245,0 cm²' },
+      formel: { text: 'O = 2 · r² · π + 2 · π · r · h', sub: '2 Kreise + Mantel' },
+    },
+    quiz: {
+      q: 'Ein Zylinder hat r = 5 cm und h = 8 cm. Wie groß ist die gesamte Oberfläche?',
+      opts: [
+        'O = 50π + 80π = 130π ≈ 408,4 cm²',
+        'O = 25π + 80π = 105π ≈ 329,9 cm²',
+        'O = 50π + 40π = 90π ≈ 282,7 cm²',
+        'O = 25π + 40π = 65π ≈ 204,2 cm²'
+      ],
+      correct: 0,
+      ok: 'Richtig! 2·G = 2·25π = 50π. M = 2·π·5·8 = 80π. O = 50π + 80π = 130π ≈ 408,4 cm².',
+      no: 'O = 2·r²·π + 2·π·r·h = 2·25·π + 2·π·5·8 = 50π + 80π = 130π ≈ 408,4 cm².',
+      tip: 'Schritt 1: 2·G = 2·5²·π = 50π.  Schritt 2: M = 2·π·5·8 = 80π.  Schritt 3: O = 50π + 80π',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '🎪',
+      title: 'Gesamte Oberfläche des Kegels berechnen',
+      body: `Die Oberfläche des Kegels besteht aus zwei Teilen:<br><br>
+             Die <strong>Grundfläche</strong> (der Kreis unten) und der <strong>Mantel</strong> (die Außenwand).<br><br>
+             Beim Kegel gibt es keinen Deckel — nur Boden und Mantel!`,
+      steps: [
+        { n: 1, text: '<strong>Mantellinie berechnen:</strong>  s = √(r² + h²)' },
+        { n: 2, text: '<strong>Grundfläche:</strong>  G = r² · π' },
+        { n: 3, text: '<strong>Mantelfläche:</strong>  M = r · π · s' },
+        { n: 4, text: '<strong>Oberfläche gesamt:</strong>  O = G + M = r² · π + r · π · s' },
+      ],
+      highlight: { type: 'red', title: '📋 Beispiel: r = 5 cm, h = 12 cm', text: 's = √(25 + 144) = √169 = 13 cm\nG = 25π ≈ 78,5 cm²\nM = 5·π·13 = 65π ≈ 204,2 cm²\nO = 25π + 65π = 90π ≈ 282,7 cm²' },
+      formel: { text: 'O = r²·π + r·π·s', sub: 'Grundfläche + Mantel — kein Deckel!' },
+    },
+    quiz: {
+      q: 'Ein Kegel hat r = 6 cm und h = 8 cm. Wie groß ist die gesamte Oberfläche?',
+      opts: [
+        'O = 36π + 60π = 96π ≈ 301,6 cm²',
+        'O = 36π + 72π = 108π ≈ 339,3 cm²',
+        'O = 36π + 48π = 84π ≈ 263,9 cm²',
+        'O = 12π + 60π = 72π ≈ 226,2 cm²'
+      ],
+      correct: 0,
+      ok: 'Richtig! s = √(36+64) = 10. G = 36π. M = 6·π·10 = 60π. O = 36π + 60π = 96π ≈ 301,6 cm².',
+      no: 's = √(r²+h²) = √(36+64) = √100 = 10. G = 36π. M = 6·π·10 = 60π. O = 96π ≈ 301,6 cm².',
+      tip: 'Schritt 1: s = √(36+64) = 10.  Schritt 2: G = 36π.  Schritt 3: M = 60π.  O = 96π',
+    }
+  },
+
+  // ─── UMKEHRAUFGABEN ───────────────────────────────
+  {
+    learn: {
+      cat: 'z', catLabel: 'Umkehraufgabe',
+      emoji: '🔄',
+      title: 'Radius aus der Mantelfläche berechnen',
+      body: `Manchmal ist nicht die Mantelfläche gesucht, sondern der Radius.<br><br>
+             Gegeben: M und h &nbsp;→&nbsp; Gesucht: r<br><br>
+             Dazu stellen wir die Formel M = 2 · π · r · h nach r um:<br><br>
+             M = 2 · π · r · h<br>
+             Beide Seiten durch (2 · π · h) teilen:<br>
+             <strong>r = M ÷ (2 · π · h)</strong>`,
+      highlight: { type: 'blue', title: '📋 Beispiel aus dem Aufgabenblatt', text: 'M = 900π cm², h = 30 cm\nr = 900π ÷ (2 · π · 30)\nr = 900π ÷ 60π\nr = 900 ÷ 60 = 15 cm\n\nTipp: π kürzt sich heraus!' },
+      formel: { text: 'r = M ÷ (2 · π · h)', sub: 'Mantelfläche nach r umgestellt' },
+    },
+    quiz: {
+      q: 'Ein Zylinder hat Mantelfläche M = 400π cm² und Höhe h = 20 cm. Wie groß ist r?',
+      opts: ['r = 5 cm', 'r = 10 cm', 'r = 20 cm', 'r = 40 cm'],
+      correct: 1,
+      ok: 'Richtig! r = 400π ÷ (2·π·20) = 400π ÷ 40π = 400 ÷ 40 = 10 cm. π kürzt sich weg!',
+      no: 'r = M ÷ (2·π·h) = 400π ÷ (2·π·20) = 400π ÷ 40π = 10 cm. Das π kürzt sich heraus.',
+      tip: 'r = 400π ÷ (2·π·20) = 400 ÷ 40 = 10 cm',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'z', catLabel: 'Umkehraufgabe',
+      emoji: '🔄',
+      title: 'Radius aus dem Volumen berechnen (Zylinder)',
+      body: `Gegeben: V und h &nbsp;→&nbsp; Gesucht: r<br><br>
+             Wir stellen V = r² · π · h nach r um:<br><br>
+             V = r² · π · h &nbsp; | &nbsp; beide Seiten ÷ (π · h)<br>
+             r² = V ÷ (π · h)<br>
+             <strong>r = √( V ÷ (π · h) )</strong><br><br>
+             Achtung: Am Ende muss man die Wurzel ziehen, weil in der Formel r² steht!`,
+      highlight: { type: 'blue', title: '📋 Beispiel aus dem Aufgabenblatt', text: 'V = 21 206 cm³, h = 30 cm\nr² = 21 206 ÷ (π · 30) = 21 206 ÷ 94,25 ≈ 225\nr = √225 = 15 cm' },
+      formel: { text: 'r = √( V ÷ (π · h) )', sub: 'Volumen nach r umgestellt — Wurzel nicht vergessen!' },
+    },
+    quiz: {
+      q: 'Ein Zylinder hat V = 1 413,7 cm³ und h = 10 cm. Wie groß ist r?',
+      opts: ['r ≈ 4,5 cm', 'r ≈ 6,7 cm', 'r ≈ 7,5 cm', 'r ≈ 15 cm'],
+      correct: 1,
+      ok: 'Richtig! r² = 1 413,7 ÷ (π·10) ≈ 45. r = √45 ≈ 6,7 cm.',
+      no: 'r² = V ÷ (π·h) = 1 413,7 ÷ (π·10) ≈ 45. r = √45 ≈ 6,7 cm.',
+      tip: 'r² = 1 413,7 ÷ (π·10) ≈ 45 → r = √45 ≈ 6,7 cm',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'k', catLabel: 'Umkehraufgabe',
+      emoji: '🔄',
+      title: 'Radius aus dem Volumen berechnen (Kegel)',
+      body: `Gegeben: V und h &nbsp;→&nbsp; Gesucht: r<br><br>
+             Wir stellen V = ⅓ · π · r² · h nach r um:<br><br>
+             V = ⅓ · π · r² · h &nbsp; | &nbsp; beide Seiten · 3<br>
+             3 · V = π · r² · h &nbsp; | &nbsp; beide Seiten ÷ (π · h)<br>
+             r² = 3 · V ÷ (π · h)<br>
+             <strong>r = √( 3 · V ÷ (π · h) )</strong><br><br>
+             Das ⅓ aus der Kegelformel wird durch Multiplizieren mit 3 weggebracht!`,
+      highlight: { type: 'red', title: '📋 Beispiel aus dem Aufgabenblatt', text: 'V = 16 889 cm³, h = 16 cm\nr² = 3 · 16 889 ÷ (π · 16)\nr² = 50 667 ÷ 50,27 ≈ 1 008\nr = √1 008 ≈ 31,7 cm' },
+      formel: { text: 'r = √( 3 · V ÷ (π · h) )', sub: 'Kegelvolumen nach r umgestellt — zuerst mal 3!' },
+    },
+    quiz: {
+      q: 'Ein Kegel hat V = 2 094 cm³ und h = 20 cm. Wie groß ist r?',
+      opts: ['r ≈ 5 cm', 'r ≈ 10 cm', 'r ≈ 15 cm', 'r ≈ 20 cm'],
+      correct: 1,
+      ok: 'Richtig! r² = 3·2094 ÷ (π·20) = 6282 ÷ 62,8 ≈ 100. r = √100 = 10 cm.',
+      no: 'r² = 3·V ÷ (π·h) = 3·2094 ÷ (π·20) = 6282 ÷ 62,8 ≈ 100. r = √100 = 10 cm.',
+      tip: 'r² = 3·2094 ÷ (π·20) = 100 → r = √100 = 10 cm',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'ku', catLabel: 'Umkehraufgabe',
+      emoji: '🔄',
+      title: 'Radius aus dem Volumen berechnen (Kugel)',
+      body: `Gegeben: V &nbsp;→&nbsp; Gesucht: r<br><br>
+             Wir stellen V = 4/3 · π · r³ nach r um:<br><br>
+             V = 4/3 · π · r³ &nbsp; | &nbsp; beide Seiten · 3<br>
+             3 · V = 4 · π · r³ &nbsp; | &nbsp; beide Seiten ÷ (4 · π)<br>
+             r³ = 3 · V ÷ (4 · π)<br>
+             <strong>r = ³√( 3 · V ÷ (4 · π) )</strong><br><br>
+             Achtung: Hier muss man die <strong>dritte Wurzel</strong> ziehen (³√), weil r³ in der Formel steht!`,
+      highlight: { type: 'green', title: '📋 Beispiel aus dem Aufgabenblatt', text: 'V = 14 137 mm³\nr³ = 3 · 14 137 ÷ (4 · π)\nr³ = 42 411 ÷ 12,57 ≈ 3 375\nr = ³√3 375 = 15 mm\nd = 2 · r = 30 mm' },
+      formel: { text: 'r = ³√( 3·V ÷ (4·π) )', sub: 'Kugelvolumen nach r umgestellt — dritte Wurzel!' },
+    },
+    quiz: {
+      q: 'Eine Kugel hat V = 904,8 cm³. Wie groß ist der Radius r?',
+      opts: ['r = 3 cm', 'r = 6 cm', 'r = 9 cm', 'r = 12 cm'],
+      correct: 1,
+      ok: 'Richtig! r³ = 3·904,8 ÷ (4·π) = 2714,4 ÷ 12,57 ≈ 216. r = ³√216 = 6 cm.',
+      no: 'r³ = 3·V ÷ (4·π) = 3·904,8 ÷ (4·π) ≈ 216. r = ³√216 = 6 cm.',
+      tip: 'r³ = 3·904,8 ÷ (4·π) ≈ 216 → r = ³√216 = 6 cm',
+    }
+  },
+
   // ─── GLEICHSEITIGE KÖRPER ─────────────────────────
   {
     learn: {
