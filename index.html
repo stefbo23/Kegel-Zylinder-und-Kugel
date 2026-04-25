@@ -379,20 +379,23 @@ const units = [
     learn: {
       cat: 'g', catLabel: 'Grundlage',
       emoji: '🔵',
-      title: 'Was ist pi?',
-      body: `Bevor wir loslegen, brauchst du eine Zahl: <strong>pi (π ≈ 3,14)</strong>.<br><br>
-             So findest du pi selbst heraus: Nimm irgendeinen Kreis. Miss den Umfang (aussen rum) und den Durchmesser (quer durch die Mitte). Teile Umfang ÷ Durchmesser.<br><br>
-             Das Ergebnis ist <strong>immer 3,14...</strong> — egal wie gross der Kreis ist. Diese Zahl nennen wir pi.`,
-      highlight: { type: 'yellow', title: '🧠 Merksatz', text: 'Pi ist das Verhältnis von Umfang zu Durchmesser bei jedem Kreis. Pi ≈ 3,14.' },
-      formel: null,
+      title: 'Was ist pi — und was ist der Kreisumfang?',
+      body: `Bevor wir loslegen, brauchst du zwei Begriffe und eine magische Zahl.<br><br>
+             <strong>Durchmesser (d)</strong> = eine Linie quer durch den Kreis, durch die Mitte.<br>
+             <strong>Umfang (U)</strong> = der Weg aussen rum um den ganzen Kreis. Den kannst du selbst messen: leg einen Faden um eine Münze, dann das Fadenende mit einem Lineal abmessen.<br><br>
+             Jetzt das Erstaunliche: Teile den Umfang durch den Durchmesser. Bei d = 10 cm ist U ≈ 31,4 cm. Also: 31,4 ÷ 10 = <strong>3,14</strong>.<br><br>
+             Das klappt bei <em>jedem</em> Kreis — ob klein oder riesig. Immer 3,14... Diese Zahl heisst <strong>pi (π)</strong>.<br><br>
+             Daraus folgt direkt: Wenn U ÷ d = π, dann ist U = π · d. Und weil d = 2·r gilt auch: <strong>U = 2 · π · r</strong>.`,
+      highlight: { type: 'yellow', title: '🧠 Das mitnehmen', text: 'Kreisumfang U = 2 · π · r\nDiesen Umfang brauchen wir später beim Zylinder-Mantel!' },
+      formel: { text: 'U = 2 · π · r', sub: 'Kreisumfang — merke das gut!' },
     },
     quiz: {
-      q: 'Was ist pi ungefähr?',
-      opts: ['1,41', '2,72', '3,14', '4,00'],
-      correct: 2,
-      ok: 'Genau! Pi ≈ 3,14 — diese Zahl steckt in fast allen Formeln für Körper.',
-      no: 'Noch nicht ganz. Pi ≈ 3,14. Diese Zahl steckt in allen Formeln für Kreise und Körper.',
-      tip: 'Umfang ÷ Durchmesser = immer 3,14...',
+      q: 'Ein Kreis hat Radius r = 5 cm. Wie gross ist sein Umfang?',
+      opts: ['U = 5π ≈ 15,7 cm', 'U = 10π ≈ 31,4 cm', 'U = 25π ≈ 78,5 cm', 'U = 2,5π ≈ 7,9 cm'],
+      correct: 1,
+      ok: 'Richtig! U = 2·π·r = 2·π·5 = 10π ≈ 31,4 cm.',
+      no: 'U = 2·π·r = 2·π·5 = 10π ≈ 31,4 cm. Den Radius mal 2 mal π.',
+      tip: 'U = 2 · π · r = 2 · 3,14 · 5 = 31,4 cm',
     }
   },
 
@@ -400,12 +403,19 @@ const units = [
     learn: {
       cat: 'g', catLabel: 'Grundlage',
       emoji: '⭕',
-      title: 'Die Kreisfläche',
-      body: `Der Kreis ist die Grundlage von allem. Wenn du die Kreisfläche kennst, verstehst du alle drei Körper.<br><br>
-             Stell dir vor, du schneidest den Kreis in viele kleine <strong>Pizzastücke</strong>. Du legst sie abwechselnd nach oben und unten nebeneinander.<br><br>
-             Je mehr Stücke, desto mehr sieht das Ergebnis aus wie ein <strong>Rechteck</strong>. Das Rechteck hat Breite = π·r und Höhe = r. Also: Fläche = π·r·r.`,
-      highlight: { type: 'blue', title: '🍕 Bild: Pizzastück-Trick', text: 'Kreis zerschneiden → zu Rechteck umlegen → Breite = π·r, Höhe = r → Fläche = π·r²' },
-      formel: { text: 'A = π · r · r = π · r²', sub: 'Kreisfläche — r = Radius (halb so gross wie der Durchmesser)' },
+      title: 'Die Kreisfläche — woher kommt π · r²?',
+      body: `Der Kreis ist die Grundlage von allem. Aber woher kommt die Formel A = π·r²?<br><br>
+             <strong>Schritt 1:</strong> Schneide den Kreis in viele gleich grosse Pizzastücke.<br>
+             <strong>Schritt 2:</strong> Leg die Stücke abwechselnd nach oben und unten nebeneinander.<br>
+             <strong>Schritt 3:</strong> Je mehr Stücke du schneidest, desto mehr sieht das Ergebnis aus wie ein <strong>Rechteck</strong>.<br><br>
+             Jetzt die entscheidende Frage: Wie gross ist dieses Rechteck?<br><br>
+             • <strong>Höhe</strong> des Rechtecks = Radius r des Kreises (die Stücke sind so lang wie r)<br>
+             • <strong>Breite</strong> des Rechtecks = alle Bögen zusammen = der <em>halbe</em> Kreisumfang.<br><br>
+             Wir wissen: Kreisumfang = 2·π·r. Also ist der <em>halbe</em> Umfang = π·r.<br>
+             Das ist die Breite des Rechtecks!<br><br>
+             Rechteck-Fläche = Breite × Höhe = <strong>π·r × r = π·r²</strong>`,
+      highlight: { type: 'blue', title: '🍕 Zusammenfassung', text: 'Breite des Rechtecks = halber Kreisumfang = ½ · 2πr = π·r\nHöhe des Rechtecks = r\nFläche = π·r · r = π·r²' },
+      formel: { text: 'A = π · r²', sub: 'Kreisfläche (sprich: pi mal r mal r)' },
     },
     quiz: {
       q: 'Ein Kreis hat Radius r = 4 cm. Was ist seine Fläche?',
@@ -476,10 +486,10 @@ const units = [
       steps: [
         { n: 1, text: 'Kreis für den <strong>Boden</strong>: π·r²' },
         { n: 2, text: 'Kreis für den <strong>Deckel</strong>: π·r²' },
-        { n: 3, text: '<strong>Mantel</strong> rundherum — schneide ihn auf → Rechteck! Breite = Umfang des Kreises = 2·π·r, Höhe = h → M = 2·π·r·h' },
+        { n: 3, text: '<strong>Mantel</strong> rundherum: Schneide die Dose an einer Seite auf und rolle sie auf — es entsteht ein <strong>Rechteck</strong>. Breite = der Weg einmal rund um die Dose = Kreisumfang = 2·π·r. Höhe = h. Also: M = 2·π·r·h' },
       ],
-      highlight: { type: 'blue', title: '📜 Bild: Mantel aufgerollt', text: 'Aufgeschnitten ist der Mantel ein Rechteck: Breite 2πr × Höhe h. Also M = 2πrh.' },
-      formel: { text: 'O = 2·π·r² + 2·π·r·h', sub: 'Oberfläche Zylinder = 2 Kreise + Mantel' },
+      highlight: { type: 'blue', title: '💡 Warum Breite = 2·π·r?', text: 'Die Breite des Rechtecks ist genau der Kreisumfang — denn wenn du die Dose aufrollst, "streckt" sich der Kreis zu einer geraden Linie. Und Kreisumfang = 2·π·r (das haben wir gerade gelernt!).' },
+      formel: { text: 'O = 2·π·r² + 2·π·r·h', sub: '2 Kreise (Boden + Deckel) + Mantel' },
     },
     quiz: {
       q: 'Warum ist die Mantelfläche M = 2·π·r·h? Was entsteht, wenn man den Mantel aufschneidet?',
@@ -656,12 +666,12 @@ const units = [
       formel: { text: 'V = 4/3 · π · r³', sub: 'Volumen Kugel — r dreimal nehmen!' },
     },
     quiz: {
-      q: 'Eine Kugel hat r = 3 cm. Wie groß ist ihr Volumen?',
-      opts: ['V = 9π ≈ 28,3 cm³', 'V = 36π ≈ 113,1 cm³', 'V = 12π ≈ 37,7 cm³', 'V = 27π ≈ 84,8 cm³'],
-      correct: 1,
-      ok: 'Super! V = 4/3·π·3³ = 4/3·π·27 = 36π ≈ 113,1 cm³',
-      no: 'V = 4/3·π·r³ = 4/3·π·27 = 36π ≈ 113,1 cm³. r³ bedeutet r×r×r = 3×3×3 = 27.',
-      tip: 'V = 4/3 · π · r · r · r = 4/3 · π · 27 = 36π',
+      q: 'Eine Kugel hat r = 6 cm. Wie groß ist ihr Volumen?',
+      opts: ['V = 36π ≈ 113,1 cm³', 'V = 144π ≈ 452,4 cm³', 'V = 288π ≈ 904,8 cm³', 'V = 72π ≈ 226,2 cm³'],
+      correct: 2,
+      ok: 'Super! V = 4/3·π·6³ = 4/3·π·216 = 288π ≈ 904,8 cm³. Wichtig: r³ = r·r·r = 6·6·6 = 216.',
+      no: 'V = 4/3·π·r³ = 4/3·π·216 = 288π ≈ 904,8 cm³. Achtung: r³ = r·r·r = 6·6·6 = 216 (nicht r² = 36)!',
+      tip: 'V = 4/3 · π · 6 · 6 · 6 = 4/3 · π · 216 = 288π ≈ 904,8 cm³',
     }
   },
 
