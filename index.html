@@ -3,904 +3,935 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz: Drehkörper</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Drehkörper Lernpfad</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --zylinder: #1a5fa8;
-    --kegel: #c0392b;
-    --kugel: #1e8449;
-    --herleitung: #b7770d;
-    --bg: #f5f0e8;
-    --card: #fefcf7;
-    --dark: #1c1a17;
-    --mid: #5c5449;
-    --light: #c4bfb2;
-    --correct: #1e8449;
-    --wrong: #c0392b;
-    --radius: 12px;
-  }
+:root {
+  --z: #2563eb;      --z-light: #eff6ff;   --z-mid: #bfdbfe;
+  --k: #dc2626;      --k-light: #fff5f5;   --k-mid: #fecaca;
+  --ku: #16a34a;     --ku-light: #f0fdf4;  --ku-mid: #bbf7d0;
+  --gold: #d97706;   --gold-light: #fffbeb;
+  --bg: #f8f7ff;
+  --white: #ffffff;
+  --dark: #1e1b4b;
+  --mid: #6b6894;
+  --border: #e2e1f0;
+  --shadow: 0 4px 24px rgba(30,27,75,0.08);
+  --radius: 16px;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--dark);
-    min-height: 100vh;
-    padding: 0;
-  }
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+}
 
-  /* Grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.5;
-  }
+/* starry bg */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(22,163,74,0.06) 0%, transparent 60%);
+}
 
-  .app { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 24px 20px 80px; position: relative; z-index: 1; }
 
-  /* HEADER */
-  header {
-    text-align: center;
-    padding: 48px 0 40px;
-    position: relative;
-  }
-  .header-tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--mid);
-    border: 1px solid var(--light);
-    padding: 5px 14px;
-    border-radius: 99px;
-    margin-bottom: 20px;
-  }
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--dark);
-    margin-bottom: 12px;
-  }
-  .subtitle {
-    font-size: 15px;
-    color: var(--mid);
-    max-width: 400px;
-    margin: 0 auto 32px;
-    line-height: 1.6;
-  }
+/* ── HEADER ── */
+.top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px;
+}
+.logo {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 1.1rem; color: var(--dark);
+  display: flex; align-items: center; gap: 8px;
+}
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--z); }
 
-  /* PROGRESS */
-  .progress-bar-wrap {
-    background: var(--light);
-    border-radius: 99px;
-    height: 6px;
-    margin-bottom: 8px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: var(--dark);
-    transition: width 0.5s cubic-bezier(.4,0,.2,1);
-  }
-  .progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--mid);
-    margin-bottom: 32px;
-  }
+.lives { display: flex; gap: 5px; font-size: 1.2rem; }
 
-  /* CATEGORY BADGE */
-  .category-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 99px;
-    margin-bottom: 20px;
-    font-weight: 500;
-  }
-  .badge-zylinder { background: #dbeafe; color: var(--zylinder); }
-  .badge-kegel    { background: #fde8e8; color: var(--kegel); }
-  .badge-kugel    { background: #d1fae5; color: var(--kugel); }
-  .badge-herleitung { background: #fef3c7; color: var(--herleitung); }
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+/* ── PROGRESS ── */
+.progress-wrap { margin-bottom: 24px; }
+.progress-track {
+  background: var(--border); border-radius: 99px; height: 8px;
+  overflow: hidden; margin-bottom: 6px;
+}
+.progress-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--z), #7c3aed);
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
+}
+.progress-meta {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--mid); font-family: 'Nunito', sans-serif; font-weight: 600;
+}
 
-  /* QUESTION CARD */
-  .question-card {
-    background: var(--card);
-    border: 1px solid #e0d9ce;
-    border-radius: 20px;
-    padding: 36px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    animation: slideIn 0.35s cubic-bezier(.4,0,.2,1);
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
 
-  .bild-box {
-    background: #fff8e1;
-    border-left: 4px solid #f5a623;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #5c4c20;
-    line-height: 1.6;
-  }
-  .bild-box strong { display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.7; }
+/* ── LERN-KARTE (teach phase) ── */
+.learn-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 99px; margin-bottom: 18px;
+}
+.learn-badge.z  { background: var(--z-mid);  color: var(--z); }
+.learn-badge.k  { background: var(--k-mid);  color: var(--k); }
+.learn-badge.ku { background: var(--ku-mid); color: var(--ku); }
+.learn-badge.g  { background: #e0e7ff; color: #4338ca; }
 
-  .question-text {
-    font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
-    font-weight: 300;
-    line-height: 1.5;
-    color: var(--dark);
-    margin-bottom: 28px;
-  }
-  .question-text em {
-    font-style: italic;
-    color: var(--mid);
-  }
+.big-emoji {
+  font-size: 4rem; text-align: center; margin: 16px 0;
+  animation: bounce 1.5s ease infinite;
+}
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
 
-  /* ANSWER OPTIONS */
-  .options { display: grid; gap: 10px; }
+.learn-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900; font-size: 1.4rem;
+  color: var(--dark); margin-bottom: 12px; line-height: 1.3;
+}
 
-  .option-btn {
-    background: white;
-    border: 1.5px solid #e0d9ce;
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    text-align: left;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--dark);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    transition: all 0.18s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--dark);
-    background: #fafaf7;
-    transform: translateX(3px);
-  }
-  .option-letter {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    font-weight: 500;
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--mid);
-    border: 1px solid var(--light);
-    transition: all 0.18s;
-  }
-  .option-btn:hover:not(:disabled) .option-letter {
-    background: var(--dark);
-    color: white;
-    border-color: var(--dark);
-  }
-  .option-btn.correct {
-    border-color: var(--correct);
-    background: #f0fdf4;
-    animation: correctPulse 0.4s ease;
-  }
-  .option-btn.correct .option-letter {
-    background: var(--correct);
-    color: white;
-    border-color: var(--correct);
-  }
-  .option-btn.wrong {
-    border-color: var(--wrong);
-    background: #fff5f5;
-    animation: wrongShake 0.4s ease;
-  }
-  .option-btn.wrong .option-letter {
-    background: var(--wrong);
-    color: white;
-    border-color: var(--wrong);
-  }
-  .option-btn.dimmed { opacity: 0.4; }
-  .option-btn:disabled { cursor: default; transform: none !important; }
+.learn-body {
+  font-size: 15px; line-height: 1.8; color: #374151; margin-bottom: 20px;
+}
+.learn-body strong { color: var(--dark); font-weight: 700; }
 
-  @keyframes correctPulse {
-    0%   { transform: scale(1); }
-    40%  { transform: scale(1.02); }
-    100% { transform: scale(1); }
-  }
-  @keyframes wrongShake {
-    0%,100% { transform: translateX(0); }
-    25%      { transform: translateX(-6px); }
-    75%      { transform: translateX(6px); }
-  }
+/* Highlight box inside learn */
+.highlight {
+  border-radius: 12px; padding: 16px 18px;
+  margin: 16px 0; font-size: 14px; line-height: 1.7;
+}
+.highlight.yellow { background: var(--gold-light); border-left: 4px solid var(--gold); color: #78350f; }
+.highlight.blue   { background: var(--z-light);    border-left: 4px solid var(--z);    color: #1e3a8a; }
+.highlight.red    { background: var(--k-light);    border-left: 4px solid var(--k);    color: #7f1d1d; }
+.highlight.green  { background: var(--ku-light);   border-left: 4px solid var(--ku);   color: #14532d; }
 
-  /* FEEDBACK */
-  .feedback {
-    margin-top: 20px;
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    font-size: 14px;
-    line-height: 1.7;
-    animation: fadeIn 0.3s ease;
-    display: none;
-  }
-  .feedback.show { display: block; }
-  .feedback.correct-fb {
-    background: #f0fdf4;
-    border: 1px solid #a7f3d0;
-    color: #155724;
-  }
-  .feedback.wrong-fb {
-    background: #fff5f5;
-    border: 1px solid #fca5a5;
-    color: #7f1d1d;
-  }
-  .feedback-icon { font-size: 20px; margin-bottom: 8px; display: block; }
-  .feedback strong { display: block; font-size: 15px; margin-bottom: 6px; }
-  .herleitung-snippet {
-    margin-top: 10px;
-    padding: 10px 14px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: inherit;
-    opacity: 0.85;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+.highlight .hl-title {
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 6px; opacity: 0.7;
+}
 
-  /* NEXT BUTTON */
-  .next-btn {
-    display: none;
-    margin-top: 16px;
-    width: 100%;
-    padding: 16px;
-    background: var(--dark);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.18s;
-    letter-spacing: 0.01em;
-  }
-  .next-btn:hover { background: #333; transform: translateY(-1px); }
-  .next-btn.show { display: block; animation: fadeIn 0.3s ease 0.3s both; }
+.formel-box {
+  background: var(--dark); color: white;
+  border-radius: 12px; padding: 16px 20px;
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 1.05rem; text-align: center; margin: 16px 0;
+  letter-spacing: 0.02em;
+}
+.formel-box small {
+  display: block; font-size: 11px; font-weight: 600;
+  opacity: 0.6; margin-top: 4px; letter-spacing: 0.08em;
+}
 
-  /* SCORE PANEL */
-  .score-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-  .score-chip {
-    background: var(--card);
-    border: 1px solid #e0d9ce;
-    border-radius: var(--radius);
-    padding: 16px;
-    text-align: center;
-  }
-  .score-chip .num {
-    font-family: 'Fraunces', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    display: block;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .score-chip .lbl {
-    font-size: 12px;
-    color: var(--mid);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.05em;
-  }
-  .score-chip.green .num { color: var(--correct); }
-  .score-chip.red .num { color: var(--wrong); }
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+.step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #f9f8ff; border-radius: 12px; padding: 12px 14px;
+}
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 13px;
+  color: white; background: var(--dark);
+}
+.step-text { font-size: 14px; line-height: 1.6; padding-top: 3px; }
+.step-text strong { color: var(--dark); }
 
-  /* RESULT SCREEN */
-  .result-screen {
-    display: none;
-    text-align: center;
-    animation: slideIn 0.4s ease;
-  }
-  .result-screen.show { display: block; }
-  .result-emoji { font-size: 4rem; margin-bottom: 16px; }
-  .result-title {
-    font-family: 'Fraunces', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .result-sub { color: var(--mid); font-size: 15px; margin-bottom: 32px; }
-  .result-bar-wrap {
-    background: #e0d9ce;
-    border-radius: 99px;
-    height: 12px;
-    margin: 12px 0 24px;
-    overflow: hidden;
-  }
-  .result-bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: var(--dark);
-    transition: width 1s cubic-bezier(.4,0,.2,1);
-  }
+/* Continue btn */
+.btn-primary {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, var(--dark) 0%, #312e81 100%);
+  color: white; border: none; border-radius: var(--radius);
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 15px; cursor: pointer; margin-top: 20px;
+  transition: all 0.2s; letter-spacing: 0.02em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,27,75,0.25); }
 
-  .restart-btn {
-    padding: 16px 40px;
-    background: var(--dark);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .restart-btn:hover { background: #333; transform: translateY(-2px); }
+/* ── QUIZ KARTE ── */
+.quiz-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #fef3c7; color: var(--gold);
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 99px; margin-bottom: 18px;
+}
 
-  .category-results {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 32px;
-    text-align: left;
-  }
-  .cat-result {
-    background: white;
-    border: 1px solid #e0d9ce;
-    border-radius: var(--radius);
-    padding: 14px 16px;
-  }
-  .cat-result .cat-name {
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
-    opacity: 0.7;
-  }
-  .cat-result .cat-score {
-    font-family: 'Fraunces', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-  }
-  .cat-result.z .cat-score { color: var(--zylinder); }
-  .cat-result.k .cat-score { color: var(--kegel); }
-  .cat-result.ku .cat-score { color: var(--kugel); }
-  .cat-result.h .cat-score { color: var(--herleitung); }
+.question-text {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 1.15rem;
+  line-height: 1.5; color: var(--dark); margin-bottom: 24px;
+}
 
-  /* START SCREEN */
-  .start-screen { animation: slideIn 0.4s ease; }
-  .start-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 28px 0 32px;
-  }
-  .start-card {
-    background: var(--card);
-    border: 1px solid #e0d9ce;
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .start-card-icon { font-size: 2rem; }
-  .start-card-text strong { display: block; font-size: 14px; font-weight: 600; }
-  .start-card-text span { font-size: 13px; color: var(--mid); }
-  .start-btn {
-    width: 100%;
-    padding: 18px;
-    background: var(--dark);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .start-btn:hover { background: #333; transform: translateY(-2px); }
+.options { display: flex; flex-direction: column; gap: 10px; }
 
-  .quiz-area { display: none; }
-  .quiz-area.show { display: block; }
+.opt {
+  background: #f9f8ff;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  cursor: pointer; text-align: left;
+  font-family: 'Nunito', sans-serif; font-weight: 700;
+  font-size: 14px; color: var(--dark);
+  display: flex; align-items: center; gap: 12px;
+  transition: all 0.18s;
+}
+.opt:hover:not(:disabled) {
+  border-color: var(--z); background: var(--z-light);
+  transform: translateX(4px);
+}
+.opt-letter {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--border); color: var(--mid);
+  font-size: 12px; font-weight: 800;
+  transition: all 0.18s;
+}
+.opt:hover:not(:disabled) .opt-letter { background: var(--z); color: white; }
+
+.opt.correct { border-color: var(--ku); background: var(--ku-light); animation: correctBounce 0.4s ease; }
+.opt.correct .opt-letter { background: var(--ku); color: white; }
+.opt.wrong   { border-color: var(--k);  background: var(--k-light);  animation: wrongWiggle 0.4s ease; }
+.opt.wrong .opt-letter   { background: var(--k);  color: white; }
+.opt.reveal  { border-color: var(--ku); background: var(--ku-light); opacity: 0.7; }
+.opt.reveal .opt-letter  { background: var(--ku); color: white; }
+.opt.dimmed  { opacity: 0.35; }
+.opt:disabled { cursor: default; transform: none !important; }
+
+@keyframes correctBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+@keyframes wrongWiggle { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+/* Feedback */
+.feedback-box {
+  margin-top: 18px; border-radius: var(--radius); padding: 18px 20px;
+  font-size: 14px; line-height: 1.7;
+  display: none; animation: fadeUp 0.3s ease;
+}
+.feedback-box.show { display: block; }
+.feedback-box.ok { background: var(--ku-light); border: 1.5px solid var(--ku-mid); color: #14532d; }
+.feedback-box.no { background: var(--k-light);  border: 1.5px solid var(--k-mid);  color: #7f1d1d; }
+.feedback-title {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 15px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.tip-box {
+  margin-top: 10px; background: rgba(255,255,255,0.6);
+  border-radius: 8px; padding: 10px 12px; font-size: 13px;
+}
+.tip-box strong { display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── ERGEBNIS ── */
+.result-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 40px 32px;
+  text-align: center; box-shadow: var(--shadow);
+  animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+  display: none;
+}
+.result-card.show { display: block; }
+.result-emoji-big { font-size: 5rem; margin-bottom: 16px; }
+.result-title {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 1.8rem; color: var(--dark); margin-bottom: 8px;
+}
+.result-sub { color: var(--mid); font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
+
+.result-track { background: var(--border); border-radius: 99px; height: 12px; margin: 0 0 24px; overflow: hidden; }
+.result-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--ku), var(--z));
+  transition: width 1.2s cubic-bezier(.4,0,.2,1);
+}
+
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.stat-box {
+  background: var(--bg); border-radius: 14px; padding: 16px 10px;
+  text-align: center;
+}
+.stat-box .n {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 2rem; line-height: 1; display: block; margin-bottom: 4px;
+}
+.stat-box .l { font-size: 12px; color: var(--mid); font-weight: 600; }
+.stat-box.ok .n { color: var(--ku); }
+.stat-box.no .n { color: var(--k); }
+
+.btn-restart {
+  padding: 16px 40px;
+  background: linear-gradient(135deg, var(--dark), #312e81);
+  color: white; border: none; border-radius: var(--radius);
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.btn-restart:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,27,75,0.25); }
+
+/* ── START ── */
+.start-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 24px; padding: 40px 32px;
+  text-align: center; box-shadow: var(--shadow);
+  animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+.start-title {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 2rem; color: var(--dark); margin-bottom: 10px;
+}
+.start-sub { color: var(--mid); font-size: 15px; margin-bottom: 28px; line-height: 1.7; }
+.body-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; text-align: left; }
+.body-item {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--bg); border-radius: 14px; padding: 14px 18px;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px;
+}
+.body-item-icon { font-size: 1.8rem; }
+
+.how-it-works {
+  background: var(--gold-light); border-radius: 14px; padding: 16px 18px;
+  margin-bottom: 24px; text-align: left; font-size: 14px; line-height: 1.8;
+  border-left: 4px solid var(--gold); color: #78350f;
+}
+.how-it-works strong { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; opacity: 0.7; }
 </style>
 </head>
 <body>
-<div class="app">
-  <header>
-    <div class="header-tag">Birkenbihl-Methode</div>
-    <h1>Drehkörper Quiz</h1>
-    <p class="subtitle">Zylinder · Kegel · Kugel<br>Formeln verstehen, nicht auswendig lernen</p>
-  </header>
+<div class="wrap">
 
-  <!-- START SCREEN -->
-  <div class="start-screen" id="startScreen">
-    <div class="start-grid">
-      <div class="start-card">
-        <div class="start-card-icon">🥫</div>
-        <div class="start-card-text">
-          <strong>Zylinder</strong>
-          <span>Volumen &amp; Oberfläche</span>
-        </div>
-      </div>
-      <div class="start-card">
-        <div class="start-card-icon">🍦</div>
-        <div class="start-card-text">
-          <strong>Kegel</strong>
-          <span>Formeln &amp; Herleitungen</span>
-        </div>
-      </div>
-      <div class="start-card">
-        <div class="start-card-icon">⚽</div>
-        <div class="start-card-text">
-          <strong>Kugel</strong>
-          <span>Oberfläche &amp; Volumen</span>
-        </div>
-      </div>
-      <div class="start-card">
-        <div class="start-card-icon">💡</div>
-        <div class="start-card-text">
-          <strong>Herleitungen</strong>
-          <span>Woher kommen die Formeln?</span>
-        </div>
-      </div>
-    </div>
-    <p style="text-align:center;font-size:14px;color:var(--mid);margin-bottom:20px;">18 Fragen · Mit Birkenbihl-Tipp nach jeder Antwort</p>
-    <button class="start-btn" onclick="startQuiz()">Quiz starten →</button>
+  <div class="top-bar">
+    <div class="logo"><div class="logo-dot"></div>Drehkörper</div>
+    <div class="lives" id="lives">❤️❤️❤️</div>
   </div>
 
-  <!-- QUIZ AREA -->
-  <div class="quiz-area" id="quizArea">
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
-    </div>
-    <div class="progress-label">
-      <span id="progressText">Frage 1 von 18</span>
-      <span id="scoreText">0 richtig</span>
-    </div>
-
-    <div class="score-row">
-      <div class="score-chip green"><span class="num" id="correctCount">0</span><span class="lbl">Richtig</span></div>
-      <div class="score-chip red"><span class="num" id="wrongCount">0</span><span class="lbl">Falsch</span></div>
-      <div class="score-chip"><span class="num" id="remainCount">18</span><span class="lbl">Verbleibend</span></div>
-    </div>
-
-    <div class="question-card" id="questionCard">
-      <div id="categoryBadge"></div>
-      <div class="bild-box" id="bildBox" style="display:none">
-        <strong>🖼️ Bild</strong>
-        <span id="bildText"></span>
+  <!-- START -->
+  <div id="startScreen">
+    <div class="start-card">
+      <div style="font-size:3.5rem;margin-bottom:16px;">🎓</div>
+      <div class="start-title">Drehkörper<br>verstehen</div>
+      <div class="start-sub">Kein Auswendiglernen.<br>Erst lesen, dann probieren — Schritt für Schritt.</div>
+      <div class="body-list">
+        <div class="body-item"><span class="body-item-icon">🥫</span><div><strong>Zylinder</strong><span style="display:block;font-weight:400;color:var(--mid);font-size:13px">Die Suppendose</span></div></div>
+        <div class="body-item"><span class="body-item-icon">🍦</span><div><strong>Kegel</strong><span style="display:block;font-weight:400;color:var(--mid);font-size:13px">Die Eistüte</span></div></div>
+        <div class="body-item"><span class="body-item-icon">⚽</span><div><strong>Kugel</strong><span style="display:block;font-weight:400;color:var(--mid);font-size:13px">Der Ball</span></div></div>
       </div>
-      <div class="question-text" id="questionText"></div>
-      <div class="options" id="optionsContainer"></div>
-      <div class="feedback" id="feedbackBox"></div>
-      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Weiter →</button>
+      <div class="how-it-works">
+        <strong>So funktioniert's</strong>
+        Zuerst siehst du eine <strong>Erklärung mit Bild</strong>.<br>
+        Dann kommt eine <strong>Frage dazu</strong>.<br>
+        Bei falscher Antwort erklären wir warum — und du lernst trotzdem etwas!
+      </div>
+      <button class="btn-primary" onclick="start()">Jetzt starten →</button>
     </div>
   </div>
 
-  <!-- RESULT SCREEN -->
-  <div class="result-screen" id="resultScreen">
-    <div class="result-emoji" id="resultEmoji"></div>
-    <div class="result-title" id="resultTitle"></div>
-    <div class="result-sub" id="resultSub"></div>
-    <div class="result-bar-wrap">
-      <div class="result-bar-fill" id="resultBar" style="width:0%"></div>
+  <!-- PROGRESS (hidden at start) -->
+  <div id="progressWrap" class="progress-wrap" style="display:none">
+    <div class="progress-track"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+    <div class="progress-meta">
+      <span id="pText">1 von 20</span>
+      <span id="pScore">⭐ 0 Punkte</span>
     </div>
-    <div class="category-results">
-      <div class="cat-result z">
-        <div class="cat-name">🥫 Zylinder</div>
-        <div class="cat-score" id="catZ">–</div>
-      </div>
-      <div class="cat-result k">
-        <div class="cat-name">🍦 Kegel</div>
-        <div class="cat-score" id="catK">–</div>
-      </div>
-      <div class="cat-result ku">
-        <div class="cat-name">⚽ Kugel</div>
-        <div class="cat-score" id="catKu">–</div>
-      </div>
-      <div class="cat-result h">
-        <div class="cat-name">💡 Herleitungen</div>
-        <div class="cat-score" id="catH">–</div>
-      </div>
-    </div>
-    <button class="restart-btn" onclick="restartQuiz()">Nochmal spielen ↺</button>
   </div>
+
+  <!-- LEARN CARD -->
+  <div id="learnCard" class="card" style="display:none"></div>
+
+  <!-- QUIZ CARD -->
+  <div id="quizCard" class="card" style="display:none"></div>
+
+  <!-- RESULT -->
+  <div id="resultCard" class="result-card"></div>
+
 </div>
 
 <script>
-const questions = [
-  // ===== ZYLINDER =====
+// =====================================================
+// DATA: jede Einheit = { learn, quiz }
+// =====================================================
+const units = [
+
+  // ─── GRUNDLAGEN ───────────────────────────────────
   {
-    cat: "zylinder", label: "Zylinder",
-    bild: "Eine Suppendose: Kreis unten, Kreis oben, glatter Mantel rundherum.",
-    q: "Wie berechnet man das Volumen eines Zylinders?",
-    opts: ["V = π · r² · h", "V = ⅓ · π · r² · h", "V = 4/3 · π · r³", "V = 2πr · h"],
-    correct: 0,
-    explain: "Richtig! Wie ein Münzstapel: Grundfläche (π·r²) mal Höhe = Volumen.",
-    herleitung: "Bild: Münzstapel. Jede Münze = Kreisfläche. Höhe h Münzen stapeln → V = π·r²·h"
-  },
-  {
-    cat: "zylinder", label: "Zylinder",
-    bild: "Du willst eine Dose in Geschenkpapier einwickeln. Wie viel Papier brauchst du?",
-    q: "Die Mantelfläche des Zylinders entsteht, wenn man den Mantel aufschneidet und flach legt. Was für eine Form entsteht dabei?",
-    opts: ["Ein Dreieck", "Ein Kreis", "Ein Rechteck", "Ein Trapez"],
-    correct: 2,
-    explain: "Genau! Der Mantel wird zu einem Rechteck. Breite = Umfang des Kreises (2πr), Höhe = h.",
-    herleitung: "Rechteck: Breite = 2·π·r (= Kreisumfang), Höhe = h → M = 2·π·r·h"
-  },
-  {
-    cat: "zylinder", label: "Zylinder",
-    q: "Ein Zylinder hat r = 5 cm und h = 10 cm. Welches Volumen hat er?",
-    opts: ["V ≈ 392,7 cm³", "V ≈ 785,4 cm³", "V ≈ 523,6 cm³", "V ≈ 1 570,8 cm³"],
-    correct: 1,
-    explain: "Richtig! V = π · 5² · 10 = 250π ≈ 785,4 cm³",
-    herleitung: "V = π · r² · h = π · 25 · 10 = 250π ≈ 785,4 cm³"
-  },
-  {
-    cat: "zylinder", label: "Zylinder",
-    bild: "Die Gesamtoberfläche der Dose = Deckel + Boden + Mantel.",
-    q: "Welche Formel für die Oberfläche eines Zylinders ist richtig?",
-    opts: ["O = πr² + 2πrh", "O = 2πr² + 2πrh", "O = πr² · h", "O = 4πr²"],
-    correct: 1,
-    explain: "Richtig! Zwei Kreise (Deckel + Boden = 2·π·r²) plus Mantel (2·π·r·h).",
-    herleitung: "O = 2·Grundfläche + Mantel = 2·π·r² + 2·π·r·h"
-  },
-  {
-    cat: "zylinder", label: "Zylinder",
-    q: "Von einem Zylinder kennt man die Mantelfläche M = 900π cm² und h = 30 cm. Welchen Radius hat er?",
-    opts: ["r = 10 cm", "r = 15 cm", "r = 20 cm", "r = 30 cm"],
-    correct: 1,
-    explain: "Richtig! M = 2·π·r·h → r = M / (2·π·h) = 900π / (60π) = 15 cm",
-    herleitung: "Formel umstellen: r = M ÷ (2·π·h) = 900π ÷ (2·π·30) = 15 cm"
+    learn: {
+      cat: 'g', catLabel: 'Grundlage',
+      emoji: '🔵',
+      title: 'Was ist pi?',
+      body: `Bevor wir loslegen, brauchst du eine Zahl: <strong>pi (π ≈ 3,14)</strong>.<br><br>
+             So findest du pi selbst heraus: Nimm irgendeinen Kreis. Miss den Umfang (aussen rum) und den Durchmesser (quer durch die Mitte). Teile Umfang ÷ Durchmesser.<br><br>
+             Das Ergebnis ist <strong>immer 3,14...</strong> — egal wie gross der Kreis ist. Diese Zahl nennen wir pi.`,
+      highlight: { type: 'yellow', title: '🧠 Merksatz', text: 'Pi ist das Verhältnis von Umfang zu Durchmesser bei jedem Kreis. Pi ≈ 3,14.' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Was ist pi ungefähr?',
+      opts: ['1,41', '2,72', '3,14', '4,00'],
+      correct: 2,
+      ok: 'Genau! Pi ≈ 3,14 — diese Zahl steckt in fast allen Formeln für Körper.',
+      no: 'Noch nicht ganz. Pi ≈ 3,14. Diese Zahl steckt in allen Formeln für Kreise und Körper.',
+      tip: 'Umfang ÷ Durchmesser = immer 3,14...',
+    }
   },
 
-  // ===== KEGEL =====
   {
-    cat: "kegel", label: "Kegel",
-    bild: "Eine Eistüte: Kreis unten, Spitze oben. h = Höhe. r = Radius unten.",
-    q: "Wie viel fasst ein Kegel im Vergleich zu einem Zylinder mit gleicher Grundfläche und Höhe?",
-    opts: ["Gleich viel", "Halb so viel", "Ein Drittel so viel", "Ein Viertel so viel"],
-    correct: 2,
-    explain: "Exakt! Das Sand-Experiment zeigt: 3 Kegel füllen genau 1 Zylinder. Deshalb der Faktor ⅓.",
-    herleitung: "Sand-Experiment: 3× Kegel schütten = 1× Zylinder voll → V_Kegel = ⅓ · V_Zylinder"
-  },
-  {
-    cat: "kegel", label: "Kegel",
-    q: "Welche Formel beschreibt das Volumen eines Kegels?",
-    opts: ["V = π · r² · h", "V = ½ · π · r² · h", "V = ⅓ · π · r² · h", "V = ⅓ · 4π · r³"],
-    correct: 2,
-    explain: "Richtig! Das ⅓ kommt aus dem Sand-Experiment: Kegel fasst ein Drittel des passenden Zylinders.",
-    herleitung: "Kegel = ⅓ · Zylinder → V = ⅓ · π · r² · h"
-  },
-  {
-    cat: "kegel", label: "Kegel",
-    bild: "h = Höhe (gerade nach oben). s = Seitenhöhe (schräg die Außenseite entlang).",
-    q: "Wie berechnet man die Seitenhöhe s eines Kegels?",
-    opts: ["s = r + h", "s = √(r² + h²)", "s = r · h", "s = √(r² − h²)"],
-    correct: 1,
-    explain: "Richtig! r, h und s bilden ein rechtwinkliges Dreieck. Pythagoras: s² = r² + h².",
-    herleitung: "Pythagoras: s ist die Hypotenuse, r und h die Katheten → s = √(r² + h²)"
-  },
-  {
-    cat: "kegel", label: "Kegel",
-    bild: "Schneide den Kegelmantel auf und leg ihn flach: Es entsteht ein Pizzastück-Form.",
-    q: "Welche Formel berechnet die Mantelfläche des Kegels?",
-    opts: ["M = 2πr · h", "M = π · r · h", "M = π · r · s", "M = π · s²"],
-    correct: 2,
-    explain: "Richtig! Das aufgeklappte Pizzastück hat den Radius s und den Bogen 2πr. Daraus folgt M = π·r·s.",
-    herleitung: "Aufgeklappter Mantel = Kreisausschnitt mit r=s und Bogenlänge=2πr → M = π·r·s"
-  },
-  {
-    cat: "kegel", label: "Kegel",
-    q: "Ein Kegel hat r = 3 cm und h = 4 cm. Was ist seine Seitenhöhe s?",
-    opts: ["s = 5 cm", "s = 7 cm", "s = √7 cm", "s = 4 cm"],
-    correct: 0,
-    explain: "Richtig! s = √(3² + 4²) = √(9+16) = √25 = 5 cm. Das ist ein 3-4-5 Dreieck!",
-    herleitung: "s = √(r² + h²) = √(9 + 16) = √25 = 5 cm → klassisches 3-4-5 Dreieck"
+    learn: {
+      cat: 'g', catLabel: 'Grundlage',
+      emoji: '⭕',
+      title: 'Die Kreisfläche',
+      body: `Der Kreis ist die Grundlage von allem. Wenn du die Kreisfläche kennst, verstehst du alle drei Körper.<br><br>
+             Stell dir vor, du schneidest den Kreis in viele kleine <strong>Pizzastücke</strong>. Du legst sie abwechselnd nach oben und unten nebeneinander.<br><br>
+             Je mehr Stücke, desto mehr sieht das Ergebnis aus wie ein <strong>Rechteck</strong>. Das Rechteck hat Breite = π·r und Höhe = r. Also: Fläche = π·r·r.`,
+      highlight: { type: 'blue', title: '🍕 Bild: Pizzastück-Trick', text: 'Kreis zerschneiden → zu Rechteck umlegen → Breite = π·r, Höhe = r → Fläche = π·r²' },
+      formel: { text: 'A = π · r · r = π · r²', sub: 'Kreisfläche — r = Radius (halb so gross wie der Durchmesser)' },
+    },
+    quiz: {
+      q: 'Ein Kreis hat Radius r = 4 cm. Was ist seine Fläche?',
+      opts: ['A = 4π ≈ 12,6 cm²', 'A = 8π ≈ 25,1 cm²', 'A = 16π ≈ 50,3 cm²', 'A = 32π ≈ 100,5 cm²'],
+      correct: 2,
+      ok: 'Super! A = π · 4² = 16π ≈ 50,3 cm². Das Quadrat des Radius ist wichtig.',
+      no: 'Fast. A = π · r² = π · 4 · 4 = 16π ≈ 50,3 cm². Vorsicht: r wird quadriert (also mal sich selbst)!',
+      tip: 'A = π · r · r = π · 16 = 50,3 cm²',
+    }
   },
 
-  // ===== KUGEL =====
+  // ─── ZYLINDER ─────────────────────────────────────
   {
-    cat: "kugel", label: "Kugel",
-    bild: "Das Apfelsinen-Experiment: Schäle eine Apfelsine und leg die Schalen zu Kreisen.",
-    q: "Wie viele Kreise mit Radius r ergeben die Schale einer Kugel mit Radius r?",
-    opts: ["2 Kreise", "3 Kreise", "4 Kreise", "6 Kreise"],
-    correct: 2,
-    explain: "Genau! Das Apfelsinen-Experiment zeigt: Die Schale ergibt immer genau 4 Kreise. Deshalb O = 4·π·r².",
-    herleitung: "Apfelsinen-Experiment → 4 Kreise → O = 4·π·r²"
-  },
-  {
-    cat: "kugel", label: "Kugel",
-    q: "Welche Formel beschreibt die Oberfläche einer Kugel?",
-    opts: ["O = 2π · r²", "O = 4π · r²", "O = π · r²", "O = ⁴⁄₃π · r³"],
-    correct: 1,
-    explain: "Richtig! 4 Apfelsinen-Kreise. Jeder Kreis hat Fläche π·r². Also O = 4·π·r².",
-    herleitung: "4 Kreise aus der Apfelsinen-Schale → O = 4·π·r²"
-  },
-  {
-    cat: "kugel", label: "Kugel",
-    bild: "Stell dir vor, die Kugel besteht aus unzähligen kleinen Pyramiden, alle zeigen zur Mitte.",
-    q: "Welche Formel berechnet das Volumen einer Kugel?",
-    opts: ["V = π · r³", "V = ½ · π · r³", "V = ⁴⁄₃ · π · r³", "V = ⅓ · π · r³"],
-    correct: 2,
-    explain: "Richtig! V = ⅓ · Oberfläche · r = ⅓ · 4π·r² · r = 4/3·π·r³. Der Pyramiden-Trick!",
-    herleitung: "Viele Pyramiden: V = ⅓ · O · r = ⅓ · 4πr² · r = ⁴⁄₃·π·r³"
-  },
-  {
-    cat: "kugel", label: "Kugel",
-    q: "Eine Kugel hat r = 6 cm. Wie groß ist ihre Oberfläche?",
-    opts: ["O ≈ 113,1 cm²", "O ≈ 452,4 cm²", "O ≈ 904,8 cm²", "O ≈ 339,3 cm²"],
-    correct: 1,
-    explain: "Richtig! O = 4·π·6² = 4·π·36 = 144π ≈ 452,4 cm²",
-    herleitung: "O = 4·π·r² = 4·π·36 = 144π ≈ 452,4 cm²"
-  },
-  {
-    cat: "kugel", label: "Kugel",
-    q: "Was passiert mit der Kugeloberfläche, wenn der Radius verdoppelt wird?",
-    opts: ["Sie verdoppelt sich", "Sie verdreifacht sich", "Sie vervierfacht sich", "Sie verachtfacht sich"],
-    correct: 2,
-    explain: "Richtig! O = 4·π·r². Wenn r → 2r, dann r² → 4r². Die Oberfläche wird 4× größer!",
-    herleitung: "O ~ r²: Radius ×2 → Oberfläche ×4. (Das Volumen würde ×8 werden, da V ~ r³)"
+    learn: {
+      cat: 'z', catLabel: 'Zylinder',
+      emoji: '🥫',
+      title: 'Was ist ein Zylinder?',
+      body: `Stell dir eine <strong>Suppendose</strong> vor. Das ist ein Zylinder.<br><br>
+             Er hat: einen runden Kreis <strong>unten</strong>, einen runden Kreis <strong>oben</strong>, und eine glatte Wand <strong>rundherum</strong>.<br><br>
+             Du brauchst nur zwei Masse, um alles zu berechnen:`,
+      steps: [
+        { n: 1, text: '<strong>r</strong> = Radius — der Abstand von der Mitte bis zum Rand des Kreises' },
+        { n: 2, text: '<strong>h</strong> = Höhe — wie gross die Dose ist' },
+      ],
+      highlight: { type: 'blue', title: '💡 Wichtig', text: 'Manchmal ist der Durchmesser d gegeben statt r. Dann gilt: r = d ÷ 2' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Ein Zylinder hat Durchmesser d = 10 cm. Was ist der Radius r?',
+      opts: ['r = 10 cm', 'r = 20 cm', 'r = 5 cm', 'r = 3,14 cm'],
+      correct: 2,
+      ok: 'Richtig! r = d ÷ 2 = 10 ÷ 2 = 5 cm. Radius ist immer die Hälfte des Durchmessers.',
+      no: 'Aufgepasst: r = d ÷ 2 = 10 ÷ 2 = 5 cm. Radius = halber Durchmesser.',
+      tip: 'Durchmesser = quer durch den ganzen Kreis. Radius = nur bis zur Mitte.',
+    }
   },
 
-  // ===== HERLEITUNGEN =====
   {
-    cat: "herleitung", label: "Herleitungen",
-    bild: "Das wichtigste Prinzip: Erst das BILD, dann die Formel.",
-    q: "Warum ist die Kreisfläche genau A = π·r²? Welches Bild erklärt das am besten?",
-    opts: [
-      "Den Kreis in Dreiecke zerlegen und zu einem Rechteck umlegen",
-      "Den Kreis mit einem Quadrat vergleichen",
-      "Die Kreislinie aufwickeln",
-      "Den Radius mehrfach abmessen"
-    ],
-    correct: 0,
-    explain: "Richtig! Pizzastücke abwechselnd umlegen → Rechteck. Breite = π·r, Höhe = r → Fläche = π·r².",
-    herleitung: "Unendlich viele Pizzastücke → Rechteck (Breite=πr, Höhe=r) → A = π·r · r = π·r²"
+    learn: {
+      cat: 'z', catLabel: 'Zylinder',
+      emoji: '🪙',
+      title: 'Volumen des Zylinders',
+      body: `Wie viel passt in die Dose? Das ist das <strong>Volumen</strong>.<br><br>
+             Hier ein Bild das hilft: Stell dir einen <strong>Stapel aus Münzen</strong> vor.<br>
+             Jede Münze ist ein dünner Kreis — sie hat die Fläche <strong>π·r²</strong>.<br>
+             Je mehr Münzen du stapelst, desto höher — und desto mehr Volumen.<br><br>
+             Also: <strong>Grundfläche × Höhe = Volumen</strong>.`,
+      highlight: { type: 'blue', title: '🪙 Bild: Münzstapel', text: 'Grundfläche G = π·r². Dann h Münzen stapeln → V = G · h = π·r²·h' },
+      formel: { text: 'V = π · r² · h', sub: 'Volumen Zylinder' },
+    },
+    quiz: {
+      q: 'Ein Zylinder hat r = 3 cm und h = 5 cm. Wie gross ist sein Volumen?',
+      opts: ['V = 15π ≈ 47,1 cm³', 'V = 45π ≈ 141,4 cm³', 'V = 9π ≈ 28,3 cm³', 'V = 30π ≈ 94,2 cm³'],
+      correct: 1,
+      ok: 'Perfekt! V = π · 3² · 5 = π · 9 · 5 = 45π ≈ 141,4 cm³',
+      no: 'Probiers so: V = π · r² · h = π · 3 · 3 · 5 = 45π ≈ 141,4 cm³. Erst r quadrieren, dann mal h.',
+      tip: 'V = π · r · r · h = π · 9 · 5 = 45π ≈ 141,4 cm³',
+    }
   },
+
   {
-    cat: "herleitung", label: "Herleitungen",
-    q: "Welches Experiment zeigt am anschaulichsten, warum das Kegelvolumen ein Drittel des Zylindervolumens ist?",
-    opts: [
-      "Mit einem Lineal messen",
-      "Kegel und Zylinder auf die Waage legen",
-      "Kegel mit Sand füllen und in einen gleich großen Zylinder schütten",
-      "Die Formel direkt ableiten"
-    ],
-    correct: 2,
-    explain: "Genau! 3× füllen und schütten → Zylinder exakt voll. Einfachste Herleitung überhaupt.",
-    herleitung: "Sand-Experiment: 3 Kegel = 1 Zylinder → V_Kegel = ⅓ · π · r² · h"
+    learn: {
+      cat: 'z', catLabel: 'Zylinder',
+      emoji: '📦',
+      title: 'Oberfläche des Zylinders',
+      body: `Wie viel Papier brauchst du, um die Dose einzuwickeln? Das ist die <strong>Oberfläche</strong>.<br><br>
+             Du brauchst drei Teile:`,
+      steps: [
+        { n: 1, text: 'Kreis für den <strong>Boden</strong>: π·r²' },
+        { n: 2, text: 'Kreis für den <strong>Deckel</strong>: π·r²' },
+        { n: 3, text: '<strong>Mantel</strong> rundherum — schneide ihn auf → Rechteck! Breite = Umfang des Kreises = 2·π·r, Höhe = h → M = 2·π·r·h' },
+      ],
+      highlight: { type: 'blue', title: '📜 Bild: Mantel aufgerollt', text: 'Aufgeschnitten ist der Mantel ein Rechteck: Breite 2πr × Höhe h. Also M = 2πrh.' },
+      formel: { text: 'O = 2·π·r² + 2·π·r·h', sub: 'Oberfläche Zylinder = 2 Kreise + Mantel' },
+    },
+    quiz: {
+      q: 'Warum ist die Mantelfläche M = 2·π·r·h? Was entsteht, wenn man den Mantel aufschneidet?',
+      opts: ['Ein Dreieck', 'Ein Kreis', 'Ein Rechteck', 'Ein Sechseck'],
+      correct: 2,
+      ok: 'Genau! Ein Rechteck. Breite = Kreisumfang = 2πr, Höhe = h. Daher M = 2·π·r·h.',
+      no: 'Es entsteht ein Rechteck! Breite = Kreisumfang (2πr), Höhe = h der Dose → M = 2πrh.',
+      tip: 'Dose aufschneiden und ausrollen → flaches Rechteck',
+    }
   },
+
+  // ─── KEGEL ────────────────────────────────────────
   {
-    cat: "herleitung", label: "Herleitungen",
-    q: "Wie hängen Kugeloberfläche und Kugelvolumen zusammen?",
-    opts: [
-      "V = O + r",
-      "V = O · r / 3",
-      "V = O² / r",
-      "V = O · r"
-    ],
-    correct: 1,
-    explain: "Richtig! V = ⅓ · O · r = ⅓ · 4πr² · r = 4/3·π·r³. Wer O kennt, kann V direkt ausrechnen!",
-    herleitung: "Pyramiden-Trick: V = ⅓ · O · r → V = O · r / 3"
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '🍦',
+      title: 'Was ist ein Kegel?',
+      body: `Stell dir eine <strong>Eistüte</strong> vor. Das ist ein Kegel.<br><br>
+             Er hat: einen runden Kreis <strong>unten</strong> und eine <strong>Spitze oben</strong>.<br><br>
+             Der Kegel hat drei Masse:`,
+      steps: [
+        { n: 1, text: '<strong>r</strong> = Radius des Kreises unten' },
+        { n: 2, text: '<strong>h</strong> = Höhe — gerade nach oben, von der Mitte des Bodens bis zur Spitze' },
+        { n: 3, text: '<strong>s</strong> = Seitenhöhe — der Weg an der Außenseite, von der Spitze bis zum Rand unten' },
+      ],
+      highlight: { type: 'red', title: '⚠️ Vorsicht', text: 'h und s sind NICHT gleich! h geht gerade hoch. s geht schräg die Außenseite entlang — s ist immer länger als h.' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Was ist die Seitenhöhe s beim Kegel?',
+      opts: ['Die Höhe h des Kegels', 'Der Radius r', 'Der Weg von der Spitze bis zum Rand außen', 'Der Umfang des Bodens'],
+      correct: 2,
+      ok: 'Richtig! s ist der Weg an der Außenseite — also schräg von der Spitze bis zum Rand.',
+      no: 's ist der schräge Weg an der Außenseite (von Spitze bis Rand). h geht gerade nach oben.',
+      tip: 'Stell dir vor, du legst ein Lineal an die Außenseite der Eistüte.',
+    }
   },
+
   {
-    cat: "herleitung", label: "Herleitungen",
-    q: "Was entsteht, wenn man den Mantel eines Zylinders aufschneidet und flach legt?",
-    opts: [
-      "Ein Kreis",
-      "Ein Dreieck",
-      "Ein Rechteck mit Breite 2πr und Höhe h",
-      "Ein Trapez"
-    ],
-    correct: 2,
-    explain: "Richtig! Die Breite = Kreisumfang = 2·π·r. Die Höhe = h. Also M = 2·π·r·h.",
-    herleitung: "Mantel aufgerollt = Rechteck: Breite=2πr, Höhe=h → M = 2·π·r·h"
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '📐',
+      title: 'Seitenhöhe s berechnen',
+      body: `Wie berechnet man s?<br><br>
+             r, h und s bilden ein <strong>rechtwinkliges Dreieck</strong>:
+             h ist die senkrechte Seite, r die waagrechte, s die schräge Seite (Hypotenuse).<br><br>
+             Der Satz des Pythagoras sagt: Die schräge Seite² = die anderen zwei Seiten²`,
+      highlight: { type: 'red', title: '📐 Pythagoras', text: 's² = r² + h²  →  s = √(r² + h²)\nBeispiel: r=3, h=4 → s = √(9+16) = √25 = 5' },
+      formel: { text: 's = √(r² + h²)', sub: 'Seitenhöhe des Kegels — Pythagoras!' },
+    },
+    quiz: {
+      q: 'Ein Kegel hat r = 6 cm und h = 8 cm. Wie lang ist die Seitenhöhe s?',
+      opts: ['s = 10 cm', 's = 14 cm', 's = 7 cm', 's = √28 ≈ 5,3 cm'],
+      correct: 0,
+      ok: 'Super! s = √(6² + 8²) = √(36+64) = √100 = 10 cm. Wieder ein schönes Pythagoras-Dreieck!',
+      no: 's = √(r² + h²) = √(36+64) = √100 = 10 cm. Der Trick: 6-8-10 ist ein bekanntes Dreieck.',
+      tip: 's = √(r² + h²) = √(36 + 64) = √100 = 10',
+    }
   },
+
+  {
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '🧪',
+      title: 'Volumen des Kegels',
+      body: `Jetzt kommt die wichtigste Idee beim Kegel.<br><br>
+             <strong>Das Sand-Experiment:</strong><br>
+             Nimm einen Zylinder und einen Kegel — gleich breit, gleich hoch.<br>
+             Füll den Kegel mit Sand. Schütte ihn in den Zylinder. Nochmal. Nochmal.<br><br>
+             Nach <strong>genau 3 Mal</strong> ist der Zylinder voll. Nicht 2, nicht 4 — genau 3.`,
+      highlight: { type: 'red', title: '🧪 Das Sand-Experiment', text: '3 Kegel füllen genau 1 Zylinder (gleiche Grundfläche, gleiche Höhe).\n→ Kegel-Volumen = ⅓ vom Zylinder' },
+      formel: { text: 'V = ⅓ · π · r² · h', sub: 'Volumen Kegel = ein Drittel vom passenden Zylinder' },
+    },
+    quiz: {
+      q: 'Warum ist das Volumen des Kegels genau ⅓ vom Zylinder-Volumen?',
+      opts: [
+        'Weil der Kegel kleiner aussieht',
+        'Weil das Sand-Experiment zeigt: 3 Kegel füllen exakt 1 Zylinder',
+        'Weil die Formel so definiert wurde',
+        'Weil der Kegel nur eine Spitze hat'
+      ],
+      correct: 1,
+      ok: 'Perfekt! Das Sand-Experiment ist die Herleitung. 3 Kegel = 1 Zylinder.',
+      no: 'Das Sand-Experiment zeigt es: 3 Kegel schütten füllen genau 1 Zylinder. Daher ÷3.',
+      tip: 'Sand-Experiment: 3× füllen und schütten → Zylinder voll',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '🍕',
+      title: 'Mantelfläche des Kegels',
+      body: `Die Mantelfläche des Kegels — also die Außenwand ohne den Boden.<br><br>
+             Schneide den Kegel-Mantel auf und leg ihn flach. Es entsteht eine <strong>Pizzastück-Form</strong> (Kreisausschnitt).<br><br>
+             Dieser Ausschnitt hat den Radius <strong>s</strong> (die Seitenhöhe) und den Bogen aussen = Umfang des Bodens = 2·π·r.`,
+      highlight: { type: 'red', title: '🍕 Mantel aufgerollt = Pizzastück', text: 'Mantelfläche M = π · r · s\nOberfläche gesamt O = π·r² + π·r·s (Boden + Mantel)' },
+      formel: { text: 'M = π · r · s    |    O = π·r² + π·r·s', sub: 'Mantel und Oberfläche Kegel — s = Seitenhöhe!' },
+    },
+    quiz: {
+      q: 'Ein Kegel hat r = 5 cm, h = 12 cm. Was ist die Seitenhöhe s und die Mantelfläche M?',
+      opts: [
+        's = 13 cm,  M = 65π ≈ 204,2 cm²',
+        's = 17 cm,  M = 85π ≈ 267 cm²',
+        's = 13 cm,  M = 25π ≈ 78,5 cm²',
+        's = 7 cm,   M = 35π ≈ 110 cm²'
+      ],
+      correct: 0,
+      ok: 'Ausgezeichnet! s = √(25+144) = √169 = 13. M = π·5·13 = 65π ≈ 204,2 cm²',
+      no: 's = √(r²+h²) = √(25+144) = √169 = 13 cm. Dann M = π·r·s = π·5·13 = 65π ≈ 204,2 cm²',
+      tip: 'Erst s berechnen (Pythagoras), dann M = π · r · s',
+    }
+  },
+
+  // ─── KUGEL ────────────────────────────────────────
+  {
+    learn: {
+      cat: 'ku', catLabel: 'Kugel',
+      emoji: '⚽',
+      title: 'Was ist eine Kugel?',
+      body: `Stell dir einen <strong>Ball</strong> vor. Das ist eine Kugel.<br><br>
+             Ganz rund. Keine Kanten, keine Ecken. Von jedem Punkt auf der Außenseite gleich weit zur Mitte.<br><br>
+             Das Schönste an der Kugel: Du brauchst nur <strong>ein einziges Maß</strong>.`,
+      steps: [
+        { n: 1, text: '<strong>r</strong> = Radius — das ist alles, was du brauchst' },
+      ],
+      highlight: { type: 'green', title: '✨ Das Beste', text: 'Für die Kugel brauchst du KEINE Höhe, KEINE Seitenhöhe — nur r.' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Was brauchst du um Oberfläche und Volumen einer Kugel zu berechnen?',
+      opts: ['Radius r und Höhe h', 'Nur den Radius r', 'Radius r und Seitenhöhe s', 'Durchmesser d und Höhe h'],
+      correct: 1,
+      ok: 'Genau! Bei der Kugel reicht der Radius r. Nichts anderes.',
+      no: 'Bei der Kugel braucht man nur r. Keine Höhe, keine Seitenhöhe — alles folgt aus r.',
+      tip: 'Die Kugel ist symmetrisch — r reicht für alles.',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'ku', catLabel: 'Kugel',
+      emoji: '🍊',
+      title: 'Oberfläche der Kugel',
+      body: `Wie viel Fläche hat die Außenseite der Kugel?<br><br>
+             <strong>Das Apfelsinen-Experiment:</strong><br>
+             Schäl eine Apfelsine (oder einen orangefarbenen Ball). Leg alle Schalenstücke flach und form daraus Kreise mit dem gleichen Radius r.<br><br>
+             <strong>Es passen genau 4 solche Kreise.</strong><br>
+             Jeder Kreis hat Fläche π·r². Also ist die Oberfläche 4 × π·r².`,
+      highlight: { type: 'green', title: '🍊 Apfelsinen-Experiment', text: 'Schale abziehen → 4 Kreise mit Radius r → O = 4·π·r²' },
+      formel: { text: 'O = 4 · π · r²', sub: 'Oberfläche Kugel' },
+    },
+    quiz: {
+      q: 'Eine Kugel hat r = 3 cm. Wie groß ist ihre Oberfläche?',
+      opts: ['O = 9π ≈ 28,3 cm²', 'O = 12π ≈ 37,7 cm²', 'O = 36π ≈ 113,1 cm²', 'O = 18π ≈ 56,5 cm²'],
+      correct: 2,
+      ok: 'Richtig! O = 4·π·3² = 4·π·9 = 36π ≈ 113,1 cm²',
+      no: 'O = 4·π·r² = 4·π·9 = 36π ≈ 113,1 cm². Zuerst r quadrieren (3×3=9), dann mal 4π.',
+      tip: 'O = 4 · π · r · r = 4 · π · 9 = 36π',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'ku', catLabel: 'Kugel',
+      emoji: '💡',
+      title: 'Volumen der Kugel',
+      body: `Wie viel passt in den Ball?<br><br>
+             Stell dir vor, du zerlegst die Kugel in ganz viele winzige <strong>Pyramiden</strong> — alle zeigen mit der Spitze zur Mitte.<br><br>
+             Alle Pyramiden haben die Höhe r. Ihre Grundflächen zusammen ergeben die Oberfläche.<br>
+             Volumen einer Pyramide = ⅓ · Grundfläche · Höhe.<br>
+             Alle zusammen: V = ⅓ · Oberfläche · r = ⅓ · 4π·r² · r`,
+      highlight: { type: 'green', title: '💡 Pyramiden-Trick', text: 'V = ⅓ · O · r = ⅓ · 4π·r² · r = 4/3 · π · r³\nDas Volumen hängt direkt mit der Oberfläche zusammen!' },
+      formel: { text: 'V = 4/3 · π · r³', sub: 'Volumen Kugel — r dreimal nehmen!' },
+    },
+    quiz: {
+      q: 'Eine Kugel hat r = 3 cm. Wie groß ist ihr Volumen?',
+      opts: ['V = 9π ≈ 28,3 cm³', 'V = 36π ≈ 113,1 cm³', 'V = 12π ≈ 37,7 cm³', 'V = 27π ≈ 84,8 cm³'],
+      correct: 1,
+      ok: 'Super! V = 4/3·π·3³ = 4/3·π·27 = 36π ≈ 113,1 cm³',
+      no: 'V = 4/3·π·r³ = 4/3·π·27 = 36π ≈ 113,1 cm³. r³ bedeutet r×r×r = 3×3×3 = 27.',
+      tip: 'V = 4/3 · π · r · r · r = 4/3 · π · 27 = 36π',
+    }
+  },
+
+  // ─── MASSE ────────────────────────────────────────
+  {
+    learn: {
+      cat: 'g', catLabel: 'Masse',
+      emoji: '⚖️',
+      title: 'Masse berechnen',
+      body: `Zwei Kugeln, beide gleich gross — eine aus Styropor, eine aus Eisen. Die Eisen-Kugel ist viel schwerer. Warum?<br><br>
+             Weil Eisen <strong>dichter</strong> ist. Dichte (ρ) bedeutet: wie viel Gramm stecken in 1 cm³.<br><br>
+             Wenn du das Volumen kennst und die Dichte — kannst du die Masse ausrechnen.`,
+      highlight: { type: 'yellow', title: '⚖️ Formel', text: 'm = ρ · V\nm = Masse (g), ρ = Dichte (g/cm³), V = Volumen (cm³)' },
+      formel: { text: 'm = ρ · V', sub: 'Masse = Dichte × Volumen' },
+    },
+    quiz: {
+      q: 'Ein Körper hat Volumen V = 50 cm³ und Dichte ρ = 3 g/cm³. Wie schwer ist er?',
+      opts: ['m = 53 g', 'm = 47 g', 'm = 150 g', 'm = 16,7 g'],
+      correct: 2,
+      ok: 'Richtig! m = ρ · V = 3 · 50 = 150 g.',
+      no: 'm = ρ · V = 3 · 50 = 150 g. Dichte mal Volumen — nicht addieren!',
+      tip: 'm = 3 g/cm³ × 50 cm³ = 150 g',
+    }
+  },
+
+  // ─── WIEDERHOLUNG & ZUSAMMENFASSUNG ───────────────
+  {
+    learn: {
+      cat: 'g', catLabel: 'Alles auf einen Blick',
+      emoji: '📋',
+      title: 'Alle drei Körper verglichen',
+      body: `Jetzt kennst du alle drei! Hier ein Vergleich:`,
+      steps: [
+        { n: '🥫', text: '<strong>Zylinder:</strong> V = π·r²·h &nbsp;|&nbsp; O = 2π·r² + 2π·r·h' },
+        { n: '🍦', text: '<strong>Kegel:</strong> V = ⅓·π·r²·h &nbsp;|&nbsp; O = π·r² + π·r·s &nbsp;|&nbsp; s = √(r²+h²)' },
+        { n: '⚽', text: '<strong>Kugel:</strong> V = 4/3·π·r³ &nbsp;|&nbsp; O = 4·π·r²' },
+      ],
+      highlight: { type: 'yellow', title: '🧠 Merksatz', text: 'Zylinder = Münzstapel.\nKegel = ⅓ Zylinder (Sand-Experiment).\nKugel = 4 Apfelsinen-Kreise.' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Welcher Körper hat das Volumen V = ⅓ · π · r² · h?',
+      opts: ['Zylinder 🥫', 'Kegel 🍦', 'Kugel ⚽', 'Keiner davon'],
+      correct: 1,
+      ok: 'Genau! Der Kegel. Das ⅓ kommt aus dem Sand-Experiment.',
+      no: 'Das ist der Kegel 🍦. Der Kegel fasst genau ⅓ so viel wie der passende Zylinder.',
+      tip: 'Kegel = ⅓ × Zylinder',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'g', catLabel: 'Typische Fehler',
+      emoji: '⚠️',
+      title: 'Häufige Fehler — und wie du sie vermeidest',
+      body: `Diese Fehler passieren fast jedem am Anfang:`,
+      steps: [
+        { n: '❌', text: '<strong>Radius und Durchmesser verwechseln:</strong> Immer prüfen — ist es der halbe Wert? r = d ÷ 2' },
+        { n: '❌', text: '<strong>h und s beim Kegel verwechseln:</strong> h für Volumen, s für Mantelfläche' },
+        { n: '❌', text: '<strong>Beim Kegel das ⅓ vergessen:</strong> Kegel = immer ein Drittel vom Zylinder' },
+        { n: '❌', text: '<strong>r³ vs r²:</strong> Kugel-Volumen braucht r·r·r — nicht nur r·r' },
+      ],
+      highlight: { type: 'yellow', title: '✅ Trick', text: 'Bevor du rechnest: Kurz hinschreiben welcher Körper es ist, und welche Größe gesucht ist.' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Ein Kegel hat r = 4 cm, h = 3 cm. Was ist das Volumen?',
+      opts: [
+        'V = π · 4² · 3 = 48π ≈ 150,8 cm³',
+        'V = ⅓ · π · 4² · 3 = 16π ≈ 50,3 cm³',
+        'V = ⅓ · π · 4 · 3 = 4π ≈ 12,6 cm³',
+        'V = 4/3 · π · 4³ ≈ 268,1 cm³'
+      ],
+      correct: 1,
+      ok: 'Top! V = ⅓ · π · 16 · 3 = 16π ≈ 50,3 cm³. Das ⅓ nicht vergessen!',
+      no: 'V = ⅓ · π · r² · h = ⅓ · π · 16 · 3 = 16π ≈ 50,3 cm². Antwort A hat das ⅓ vergessen!',
+      tip: 'Kegel → immer ⅓ davor! V = ⅓ · π · r² · h',
+    }
+  },
+
 ];
 
+// =====================================================
 // STATE
-let shuffled = [];
-let current = 0;
-let correct = 0;
-let wrong = 0;
+// =====================================================
+let phase = 'start';   // start | learn | quiz | result
+let uIdx = 0;
+let score = 0;
+let mistakes = 0;
 let answered = false;
-let catStats = { zylinder:[0,0], kegel:[0,0], kugel:[0,0], herleitung:[0,0] };
+let lives = 3;
 
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i+1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function startQuiz() {
-  shuffled = shuffle(questions);
-  current = 0; correct = 0; wrong = 0; answered = false;
-  catStats = { zylinder:[0,0], kegel:[0,0], kugel:[0,0], herleitung:[0,0] };
+function start() {
+  uIdx = 0; score = 0; mistakes = 0; lives = 3; answered = false;
   document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('resultScreen').classList.remove('show');
-  document.getElementById('quizArea').classList.add('show');
-  renderQuestion();
+  document.getElementById('progressWrap').style.display = 'block';
+  updateLives();
+  showLearn();
 }
 
-function renderQuestion() {
-  const q = shuffled[current];
-  answered = false;
+function updateProgress() {
+  const total = units.length * 2;
+  const done = uIdx * 2 + (phase === 'quiz' ? 1 : 0);
+  document.getElementById('pFill').style.width = `${(done/total)*100}%`;
+  document.getElementById('pText').textContent = `Einheit ${uIdx+1} von ${units.length}`;
+  document.getElementById('pScore').textContent = `⭐ ${score} Punkte`;
+}
 
-  // Progress
-  const total = shuffled.length;
-  document.getElementById('progressBar').style.width = `${(current/total)*100}%`;
-  document.getElementById('progressText').textContent = `Frage ${current+1} von ${total}`;
-  document.getElementById('scoreText').textContent = `${correct} richtig`;
-  document.getElementById('correctCount').textContent = correct;
-  document.getElementById('wrongCount').textContent = wrong;
-  document.getElementById('remainCount').textContent = total - current;
+function updateLives() {
+  const l = document.getElementById('lives');
+  l.textContent = ['❤️','❤️','❤️'].slice(0,lives).join('') + ['🖤','🖤','🖤'].slice(lives).join('');
+}
 
-  // Badge
-  const badge = document.getElementById('categoryBadge');
-  const badgeClass = { zylinder:'badge-zylinder', kegel:'badge-kegel', kugel:'badge-kugel', herleitung:'badge-herleitung' }[q.cat];
-  badge.innerHTML = `<span class="category-badge ${badgeClass}"><span class="badge-dot"></span>${q.label}</span>`;
+function showLearn() {
+  phase = 'learn';
+  updateProgress();
+  const u = units[uIdx].learn;
+  const catClass = {z:'z', k:'k', ku:'ku', g:'g'}[u.cat] || 'g';
+  const catColors = {z:['Zylinder','z'], k:['Kegel','k'], ku:['Kugel','ku'], g:['Grundlage','g']};
 
-  // Bild
-  const bildBox = document.getElementById('bildBox');
-  if (q.bild) {
-    bildBox.style.display = 'block';
-    document.getElementById('bildText').textContent = q.bild;
-  } else {
-    bildBox.style.display = 'none';
+  let stepsHtml = '';
+  if (u.steps) {
+    stepsHtml = '<div class="steps">' + u.steps.map(s =>
+      `<div class="step"><div class="step-num">${s.n}</div><div class="step-text">${s.text}</div></div>`
+    ).join('') + '</div>';
   }
 
-  // Question
-  document.getElementById('questionText').textContent = q.q;
+  let hlHtml = '';
+  if (u.highlight) {
+    hlHtml = `<div class="highlight ${u.highlight.type}">
+      <div class="hl-title">${u.highlight.title}</div>
+      ${u.highlight.text.replace(/\n/g,'<br>')}
+    </div>`;
+  }
 
-  // Options (shuffle display order)
-  const optOrder = shuffle([0,1,2,3]);
-  const letters = ['A','B','C','D'];
-  const container = document.getElementById('optionsContainer');
-  container.innerHTML = '';
-  optOrder.forEach((origIdx, displayIdx) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.dataset.origIdx = origIdx;
-    btn.innerHTML = `<span class="option-letter">${letters[displayIdx]}</span><span>${q.opts[origIdx]}</span>`;
-    btn.onclick = () => selectAnswer(btn, origIdx);
-    container.appendChild(btn);
-  });
+  let formelHtml = '';
+  if (u.formel) {
+    formelHtml = `<div class="formel-box">${u.formel.text}<small>${u.formel.sub}</small></div>`;
+  }
 
-  // Feedback
-  const fb = document.getElementById('feedbackBox');
-  fb.className = 'feedback';
-  fb.innerHTML = '';
-
-  // Next btn
-  document.getElementById('nextBtn').classList.remove('show');
-
-  // Card animation
-  const card = document.getElementById('questionCard');
-  card.style.animation = 'none';
-  card.offsetHeight;
-  card.style.animation = 'slideIn 0.35s cubic-bezier(.4,0,.2,1)';
+  const lc = document.getElementById('learnCard');
+  lc.innerHTML = `
+    <span class="learn-badge ${catClass}">${u.catLabel}</span>
+    <div class="big-emoji">${u.emoji}</div>
+    <div class="learn-title">${u.title}</div>
+    <div class="learn-body">${u.body}</div>
+    ${stepsHtml}
+    ${hlHtml}
+    ${formelHtml}
+    <button class="btn-primary" onclick="showQuiz()">Ich hab's verstanden — zur Frage →</button>
+  `;
+  lc.style.display = 'block';
+  document.getElementById('quizCard').style.display = 'none';
+  lc.style.animation = 'none'; lc.offsetHeight; lc.style.animation = 'popIn 0.4s cubic-bezier(.34,1.56,.64,1)';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function selectAnswer(btn, origIdx) {
+function showQuiz() {
+  phase = 'quiz';
+  answered = false;
+  updateProgress();
+  const u = units[uIdx];
+  const q = u.quiz;
+  const letters = ['A','B','C','D'];
+
+  // shuffle options but keep track of correct
+  const order = shuffle([0,1,2,3]);
+
+  const optsHtml = order.map((origIdx, di) => `
+    <button class="opt" id="opt${origIdx}" data-idx="${origIdx}" onclick="selectOpt(${origIdx})">
+      <span class="opt-letter">${letters[di]}</span>
+      <span>${q.opts[origIdx]}</span>
+    </button>
+  `).join('');
+
+  const qc = document.getElementById('quizCard');
+  qc.innerHTML = `
+    <span class="quiz-badge">❓ Frage</span>
+    <div class="question-text">${q.q}</div>
+    <div class="options" id="opts">${optsHtml}</div>
+    <div class="feedback-box" id="fb"></div>
+    <button class="btn-primary" id="nextBtn" style="display:none" onclick="nextUnit()">Weiter →</button>
+  `;
+  qc.style.display = 'block';
+  document.getElementById('learnCard').style.display = 'none';
+  qc.style.animation = 'none'; qc.offsetHeight; qc.style.animation = 'popIn 0.4s cubic-bezier(.34,1.56,.64,1)';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function selectOpt(idx) {
   if (answered) return;
   answered = true;
-  const q = shuffled[current];
-  const isCorrect = origIdx === q.correct;
+  const q = units[uIdx].quiz;
+  const isCorrect = idx === q.correct;
 
-  // Track cat stats
-  catStats[q.cat][1]++;
-  if (isCorrect) { catStats[q.cat][0]++; correct++; } else { wrong++; }
-
-  // Style buttons
-  const allBtns = document.querySelectorAll('.option-btn');
-  allBtns.forEach(b => {
+  document.querySelectorAll('.opt').forEach(b => {
     b.disabled = true;
-    const bi = parseInt(b.dataset.origIdx);
-    if (bi === q.correct) b.classList.add('correct');
-    else if (b === btn && !isCorrect) b.classList.add('wrong');
+    const bi = parseInt(b.dataset.idx);
+    if (bi === q.correct) b.classList.add(isCorrect && bi === idx ? 'correct' : 'reveal');
+    else if (bi === idx && !isCorrect) b.classList.add('wrong');
     else b.classList.add('dimmed');
   });
 
-  // Feedback
-  const fb = document.getElementById('feedbackBox');
-  fb.className = `feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'} show`;
+  if (isCorrect) { score += 10; }
+  else { mistakes++; lives = Math.max(0, lives - 1); updateLives(); }
+
+  document.getElementById('pScore').textContent = `⭐ ${score} Punkte`;
+
+  const fb = document.getElementById('fb');
+  fb.className = `feedback-box ${isCorrect ? 'ok' : 'no'} show`;
   fb.innerHTML = `
-    <span class="feedback-icon">${isCorrect ? '✓' : '✗'}</span>
-    <strong>${isCorrect ? 'Richtig!' : 'Nicht ganz.'}</strong>
-    ${q.explain}
-    <div class="herleitung-snippet">💡 Herleitung: ${q.herleitung}</div>
+    <div class="feedback-title">${isCorrect ? '✅ Richtig!' : '❌ Nicht ganz.'}</div>
+    ${isCorrect ? q.ok : q.no}
+    <div class="tip-box"><strong>💡 Herleitung</strong>${q.tip}</div>
   `;
 
-  document.getElementById('nextBtn').classList.add('show');
-  document.getElementById('correctCount').textContent = correct;
-  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('nextBtn').style.display = 'flex';
 }
 
-function nextQuestion() {
-  current++;
-  if (current >= shuffled.length) {
-    showResult();
-  } else {
-    renderQuestion();
-  }
+function nextUnit() {
+  uIdx++;
+  if (uIdx >= units.length) { showResult(); return; }
+  showLearn();
 }
 
 function showResult() {
-  document.getElementById('quizArea').classList.remove('show');
-  const result = document.getElementById('resultScreen');
-  result.classList.add('show');
+  document.getElementById('learnCard').style.display = 'none';
+  document.getElementById('quizCard').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('lives').style.display = 'none';
 
-  const pct = Math.round((correct / shuffled.length) * 100);
+  const total = units.length * 10;
+  const pct = Math.round((score / total) * 100);
   let emoji, title, sub;
-  if (pct >= 90)      { emoji='🏆'; title='Ausgezeichnet!'; sub='Du hast die Körper wirklich verstanden.'; }
-  else if (pct >= 70) { emoji='👍'; title='Gut gemacht!'; sub='Fast alles richtig. Nochmal die Fehler anschauen?'; }
-  else if (pct >= 50) { emoji='📚'; title='Weiter üben!'; sub='Schau dir die gelben Herleitungsboxen nochmals an.'; }
-  else                { emoji='💪'; title='Nicht aufgeben!'; sub='Lies das Skript nochmals – und dann nochmal probieren.'; }
+  if (pct >= 90) { emoji='🏆'; title='Ausgezeichnet!'; sub=`Du hast ${score} von ${total} Punkten. Du verstehst die Körper wirklich!`; }
+  else if (pct >= 70) { emoji='🌟'; title='Sehr gut!'; sub=`${score} von ${total} Punkten. Fast alles verstanden!`; }
+  else if (pct >= 50) { emoji='📚'; title='Gut gemacht!'; sub=`${score} von ${total} Punkten. Schau dir die gelben Boxen nochmal an.`; }
+  else { emoji='💪'; title='Weiter üben!'; sub=`${score} von ${total} Punkten. Nochmal von vorne — du schaffst das!`; }
 
-  document.getElementById('resultEmoji').textContent = emoji;
-  document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultSub').textContent = `${correct} von ${shuffled.length} richtig (${pct}%) — ${sub}`;
-
-  setTimeout(() => {
-    document.getElementById('resultBar').style.width = `${pct}%`;
-  }, 100);
-
-  const fmt = (cat) => {
-    const [c, t] = catStats[cat];
-    return t === 0 ? '–' : `${c}/${t}`;
-  };
-  document.getElementById('catZ').textContent = fmt('zylinder');
-  document.getElementById('catK').textContent = fmt('kegel');
-  document.getElementById('catKu').textContent = fmt('kugel');
-  document.getElementById('catH').textContent = fmt('herleitung');
+  const rc = document.getElementById('resultCard');
+  rc.innerHTML = `
+    <div class="result-emoji-big">${emoji}</div>
+    <div class="result-title">${title}</div>
+    <div class="result-sub">${sub}</div>
+    <div class="result-track"><div class="result-fill" id="rFill" style="width:0%"></div></div>
+    <div class="stat-grid">
+      <div class="stat-box ok"><span class="n">${score}</span><span class="l">Punkte</span></div>
+      <div class="stat-box no"><span class="n">${mistakes}</span><span class="l">Fehler</span></div>
+      <div class="stat-box"><span class="n">${lives}</span><span class="l">Leben übrig</span></div>
+    </div>
+    <button class="btn-restart" onclick="restartAll()">Nochmal spielen ↺</button>
+  `;
+  rc.classList.add('show');
+  setTimeout(() => { document.getElementById('rFill').style.width = `${pct}%`; }, 200);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function restartQuiz() {
-  document.getElementById('resultScreen').classList.remove('show');
-  startQuiz();
+function restartAll() {
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('lives').style.display = 'flex';
+  document.getElementById('startScreen').style.display = 'block';
+  document.getElementById('startScreen').style.animation = 'none';
+  document.getElementById('startScreen').offsetHeight;
+  document.getElementById('startScreen').style.animation = '';
+}
+
+function shuffle(a) {
+  const b = [...a];
+  for (let i=b.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; }
+  return b;
 }
 </script>
 </body>
