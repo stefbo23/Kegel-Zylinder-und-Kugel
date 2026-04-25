@@ -160,7 +160,24 @@ body::before {
 .step-text strong { color: var(--dark); }
 
 /* Continue btn */
-.btn-primary {
+.btn-back {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.btn-back:hover { border-color: var(--dark); color: var(--dark); background: white; }
+
   width: 100%; padding: 16px;
   background: linear-gradient(135deg, var(--dark) 0%, #312e81 100%);
   color: white; border: none; border-radius: var(--radius);
@@ -390,7 +407,7 @@ const units = [
       formel: { text: 'U = 2 · π · r', sub: 'Kreisumfang — merke das gut!' },
     },
     quiz: {
-      q: 'Ein Kreis hat Radius r = 5 cm. Wie gross ist sein Umfang?',
+      q: 'Ein Kreis hat Radius r = 5 cm. Wie groß ist sein Umfang?',
       opts: ['U = 5π ≈ 15,7 cm', 'U = 10π ≈ 31,4 cm', 'U = 25π ≈ 78,5 cm', 'U = 2,5π ≈ 7,9 cm'],
       correct: 1,
       ok: 'Richtig! U = 2·π·r = 2·π·5 = 10π ≈ 31,4 cm.',
@@ -405,10 +422,10 @@ const units = [
       emoji: '⭕',
       title: 'Die Kreisfläche — woher kommt π · r²?',
       body: `Der Kreis ist die Grundlage von allem. Aber woher kommt die Formel A = π·r²?<br><br>
-             <strong>Schritt 1:</strong> Schneide den Kreis in viele gleich grosse Pizzastücke.<br>
+             <strong>Schritt 1:</strong> Schneide den Kreis in viele gleich große Pizzastücke.<br>
              <strong>Schritt 2:</strong> Leg die Stücke abwechselnd nach oben und unten nebeneinander.<br>
              <strong>Schritt 3:</strong> Je mehr Stücke du schneidest, desto mehr sieht das Ergebnis aus wie ein <strong>Rechteck</strong>.<br><br>
-             Jetzt die entscheidende Frage: Wie gross ist dieses Rechteck?<br><br>
+             Jetzt die entscheidende Frage: Wie groß ist dieses Rechteck?<br><br>
              • <strong>Höhe</strong> des Rechtecks = Radius r des Kreises (die Stücke sind so lang wie r)<br>
              • <strong>Breite</strong> des Rechtecks = alle Bögen zusammen = der <em>halbe</em> Kreisumfang.<br><br>
              Wir wissen: Kreisumfang = 2·π·r. Also ist der <em>halbe</em> Umfang = π·r.<br>
@@ -435,10 +452,10 @@ const units = [
       title: 'Was ist ein Zylinder?',
       body: `Stell dir eine <strong>Suppendose</strong> vor. Das ist ein Zylinder.<br><br>
              Er hat: einen runden Kreis <strong>unten</strong>, einen runden Kreis <strong>oben</strong>, und eine glatte Wand <strong>rundherum</strong>.<br><br>
-             Du brauchst nur zwei Masse, um alles zu berechnen:`,
+             Du brauchst nur zwei Maße, um alles zu berechnen:`,
       steps: [
         { n: 1, text: '<strong>r</strong> = Radius — der Abstand von der Mitte bis zum Rand des Kreises' },
-        { n: 2, text: '<strong>h</strong> = Höhe — wie gross die Dose ist' },
+        { n: 2, text: '<strong>h</strong> = Höhe — wie groß die Dose ist' },
       ],
       highlight: { type: 'blue', title: '💡 Wichtig', text: 'Manchmal ist der Durchmesser d gegeben statt r. Dann gilt: r = d ÷ 2' },
       formel: null,
@@ -467,7 +484,7 @@ const units = [
       formel: { text: 'V = π · r² · h', sub: 'Volumen Zylinder' },
     },
     quiz: {
-      q: 'Ein Zylinder hat r = 3 cm und h = 5 cm. Wie gross ist sein Volumen?',
+      q: 'Ein Zylinder hat r = 3 cm und h = 5 cm. Wie groß ist sein Volumen?',
       opts: ['V = 15π ≈ 47,1 cm³', 'V = 45π ≈ 141,4 cm³', 'V = 9π ≈ 28,3 cm³', 'V = 30π ≈ 94,2 cm³'],
       correct: 1,
       ok: 'Perfekt! V = π · 3² · 5 = π · 9 · 5 = 45π ≈ 141,4 cm³',
@@ -509,13 +526,13 @@ const units = [
       title: 'Was ist ein Kegel?',
       body: `Stell dir eine <strong>Eistüte</strong> vor. Das ist ein Kegel.<br><br>
              Er hat: einen runden Kreis <strong>unten</strong> und eine <strong>Spitze oben</strong>.<br><br>
-             Der Kegel hat drei Masse:`,
+             Der Kegel hat drei Maße:`,
       steps: [
         { n: 1, text: '<strong>r</strong> = Radius des Kreises unten' },
         { n: 2, text: '<strong>h</strong> = Höhe — gerade nach oben, von der Mitte des Bodens bis zur Spitze' },
-        { n: 3, text: '<strong>s</strong> = Seitenhöhe — der Weg an der Außenseite, von der Spitze bis zum Rand unten' },
+        { n: 3, text: '<strong>s</strong> = Mantellinie (auch: Mantelstrecke) — der Weg an der Außenseite, von der Spitze schräg bis zum Rand unten' },
       ],
-      highlight: { type: 'red', title: '⚠️ Vorsicht', text: 'h und s sind NICHT gleich! h geht gerade hoch. s geht schräg die Außenseite entlang — s ist immer länger als h.' },
+      highlight: { type: 'red', title: '⚠️ Vorsicht: h ≠ s', text: 'h geht GERADE nach oben (durch den Kegel hindurch).\ns geht SCHRÄG die Außenseite entlang — s ist immer länger als h!\nIm Schulbuch heißt s auch "Mantellinie" oder "Mantelstrecke".' },
       formel: null,
     },
     quiz: {
@@ -532,13 +549,15 @@ const units = [
     learn: {
       cat: 'k', catLabel: 'Kegel',
       emoji: '📐',
-      title: 'Seitenhöhe s berechnen',
-      body: `Wie berechnet man s?<br><br>
-             r, h und s bilden ein <strong>rechtwinkliges Dreieck</strong>:
-             h ist die senkrechte Seite, r die waagrechte, s die schräge Seite (Hypotenuse).<br><br>
-             Der Satz des Pythagoras sagt: Die schräge Seite² = die anderen zwei Seiten²`,
-      highlight: { type: 'red', title: '📐 Pythagoras', text: 's² = r² + h²  →  s = √(r² + h²)\nBeispiel: r=3, h=4 → s = √(9+16) = √25 = 5' },
-      formel: { text: 's = √(r² + h²)', sub: 'Seitenhöhe des Kegels — Pythagoras!' },
+      title: 'Mantellinie s berechnen (Pythagoras)',
+      body: `Wie berechnet man s — die Mantellinie?<br><br>
+             Stell dir vor, du schneidest den Kegel von der Spitze bis zum Rand durch. Im Inneren siehst du ein <strong>rechtwinkliges Dreieck</strong>:<br><br>
+             • <strong>h</strong> = die senkrechte Seite (Höhe)<br>
+             • <strong>r</strong> = die waagrechte Seite (Radius des Bodens)<br>
+             • <strong>s</strong> = die schräge Seite — das ist die Mantellinie (die Hypotenuse)<br><br>
+             Den Satz des Pythagoras kennst du vielleicht schon: Bei einem rechtwinkligen Dreieck gilt: die schräge Seite² = die anderen zwei Seiten²`,
+      highlight: { type: 'red', title: '📐 Pythagoras → Mantellinie s', text: 's² = r² + h²\ns = √(r² + h²)\n\nBeispiel: r = 3, h = 4 → s = √(9+16) = √25 = 5' },
+      formel: { text: 's = √(r² + h²)', sub: 'Mantellinie des Kegels — Pythagoras!' },
     },
     quiz: {
       q: 'Ein Kegel hat r = 6 cm und h = 8 cm. Wie lang ist die Seitenhöhe s?',
@@ -584,10 +603,13 @@ const units = [
       emoji: '🍕',
       title: 'Mantelfläche des Kegels',
       body: `Die Mantelfläche des Kegels — also die Außenwand ohne den Boden.<br><br>
-             Schneide den Kegel-Mantel auf und leg ihn flach. Es entsteht eine <strong>Pizzastück-Form</strong> (Kreisausschnitt).<br><br>
-             Dieser Ausschnitt hat den Radius <strong>s</strong> (die Seitenhöhe) und den Bogen aussen = Umfang des Bodens = 2·π·r.`,
-      highlight: { type: 'red', title: '🍕 Mantel aufgerollt = Pizzastück', text: 'Mantelfläche M = π · r · s\nOberfläche gesamt O = π·r² + π·r·s (Boden + Mantel)' },
-      formel: { text: 'M = π · r · s    |    O = π·r² + π·r·s', sub: 'Mantel und Oberfläche Kegel — s = Seitenhöhe!' },
+             Schneide den Mantel an einer Seite auf und leg ihn flach. Es entsteht ein <strong>Kreisausschnitt</strong> (wie ein Pizzastück).<br><br>
+             Dieser Ausschnitt hat:<br>
+             • Radius = <strong>s</strong> (die Mantellinie)<br>
+             • Bogen außen = Umfang des Bodenkreises = 2·π·r<br><br>
+             Die Fläche eines solchen Kreisausschnitts ergibt sich zu: M = Bogen × s ÷ 2 = 2·π·r · s ÷ 2 = <strong>r · π · s</strong>`,
+      highlight: { type: 'red', title: '🍕 Ergebnis', text: 'Mantelfläche M = r · π · s\n(Im Schulbuch auch geschrieben als M = r · π · s)\nOberfläche O = Grundfläche + Mantel = r²·π + r·π·s' },
+      formel: { text: 'M = r · π · s    |    O = r²·π + r·π·s', sub: 'Mantel und Oberfläche Kegel — s = Mantellinie!' },
     },
     quiz: {
       q: 'Ein Kegel hat r = 5 cm, h = 12 cm. Was ist die Seitenhöhe s und die Mantelfläche M?',
@@ -639,8 +661,8 @@ const units = [
              Schäl eine Apfelsine (oder einen orangefarbenen Ball). Leg alle Schalenstücke flach und form daraus Kreise mit dem gleichen Radius r.<br><br>
              <strong>Es passen genau 4 solche Kreise.</strong><br>
              Jeder Kreis hat Fläche π·r². Also ist die Oberfläche 4 × π·r².`,
-      highlight: { type: 'green', title: '🍊 Apfelsinen-Experiment', text: 'Schale abziehen → 4 Kreise mit Radius r → O = 4·π·r²' },
-      formel: { text: 'O = 4 · π · r²', sub: 'Oberfläche Kugel' },
+      highlight: { type: 'green', title: '🍊 Apfelsinen-Experiment', text: 'Schale abziehen → 4 Kreise mit Radius r → O = 4·π·r²\n\nAlternativ mit Durchmesser d: O = d²·π\n(Denn d = 2r, also (2r)² = 4r²)' },
+      formel: { text: 'O = 4 · π · r²  =  d² · π', sub: 'Oberfläche Kugel — zwei gleichwertige Schreibweisen' },
     },
     quiz: {
       q: 'Eine Kugel hat r = 3 cm. Wie groß ist ihre Oberfläche?',
@@ -675,25 +697,186 @@ const units = [
     }
   },
 
-  // ─── MASSE ────────────────────────────────────────
+  // ─── DICHTE & MASSE ───────────────────────────────
   {
     learn: {
-      cat: 'g', catLabel: 'Masse',
+      cat: 'g', catLabel: 'Dichte & Masse',
       emoji: '⚖️',
-      title: 'Masse berechnen',
-      body: `Zwei Kugeln, beide gleich gross — eine aus Styropor, eine aus Eisen. Die Eisen-Kugel ist viel schwerer. Warum?<br><br>
-             Weil Eisen <strong>dichter</strong> ist. Dichte (ρ) bedeutet: wie viel Gramm stecken in 1 cm³.<br><br>
-             Wenn du das Volumen kennst und die Dichte — kannst du die Masse ausrechnen.`,
-      highlight: { type: 'yellow', title: '⚖️ Formel', text: 'm = ρ · V\nm = Masse (g), ρ = Dichte (g/cm³), V = Volumen (cm³)' },
+      title: 'Was ist Dichte?',
+      body: `Stell dir vor, du hast zwei Würfel — beide gleich groß. Einer aus Styropor, einer aus Eisen.<br><br>
+             Der Eisenwürfel ist viel schwerer. Warum? Weil Eisen <strong>dichter</strong> ist.<br><br>
+             <strong>Dichte (ρ)</strong> bedeutet: wie viel Gramm stecken in genau 1 cm³ eines Stoffes.<br><br>
+             Bekannte Dichten:<br>
+             • Wasser: ρ = 1 g/cm³<br>
+             • Aluminium: ρ = 2,7 g/cm³<br>
+             • Eisen: ρ = 7,87 g/cm³<br>
+             • Gold: ρ = 19,3 g/cm³`,
+      highlight: { type: 'yellow', title: '⚖️ Die drei Formeln', text: 'm = ρ · V          (Masse berechnen)\nρ = m ÷ V         (Dichte berechnen)\nV = m ÷ ρ         (Volumen berechnen)\n\nm = Masse (g oder kg)\nρ = Dichte (g/cm³)\nV = Volumen (cm³)' },
       formel: { text: 'm = ρ · V', sub: 'Masse = Dichte × Volumen' },
     },
     quiz: {
-      q: 'Ein Körper hat Volumen V = 50 cm³ und Dichte ρ = 3 g/cm³. Wie schwer ist er?',
-      opts: ['m = 53 g', 'm = 47 g', 'm = 150 g', 'm = 16,7 g'],
+      q: 'Was bedeutet Dichte ρ = 2,7 g/cm³?',
+      opts: [
+        'Der Körper wiegt 2,7 g',
+        'In 1 cm³ des Stoffes stecken 2,7 g Masse',
+        'Das Volumen beträgt 2,7 cm³',
+        'Der Körper ist 2,7 cm groß'
+      ],
+      correct: 1,
+      ok: 'Genau! Dichte gibt an, wie viel Gramm in 1 cm³ stecken. ρ = 2,7 g/cm³ ist z. B. Aluminium.',
+      no: 'Dichte = Masse pro Volumeneinheit. ρ = 2,7 g/cm³ heißt: in jedem cm³ stecken 2,7 g.',
+      tip: 'Dichte ρ = Masse ÷ Volumen → je höher ρ, desto schwerer pro cm³',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'z', catLabel: 'Dichte & Masse',
+      emoji: '🥫',
+      title: 'Masse eines Zylinders berechnen',
+      body: `Jetzt kombinieren wir: Erst das Volumen des Zylinders berechnen, dann die Masse.<br><br>
+             <strong>Vorgehen in zwei Schritten:</strong>`,
+      steps: [
+        { n: 1, text: '<strong>Volumen berechnen:</strong>  V = r² · π · h' },
+        { n: 2, text: '<strong>Masse berechnen:</strong>  m = ρ · V' },
+      ],
+      highlight: { type: 'blue', title: '📋 Beispiel aus dem Schulbuch', text: 'Zylinder: r = 15 cm, h = 60 cm, ρ = 2,7 g/cm³\nSchritt 1: V = 15² · π · 60 = 13 500π ≈ 42 411,5 cm³\nSchritt 2: m = 2,7 · 42 411,5 ≈ 114 511 g ≈ 114,5 kg' },
+      formel: { text: 'V = r²·π·h    dann    m = ρ · V', sub: 'Erst Volumen, dann Masse' },
+    },
+    quiz: {
+      q: 'Ein Zylinder hat r = 10 cm, h = 20 cm und Dichte ρ = 1 g/cm³ (Wasser). Wie schwer ist er?',
+      opts: [
+        'm ≈ 628 g',
+        'm ≈ 2 000 g',
+        'm ≈ 6 283 g',
+        'm ≈ 62 832 g'
+      ],
       correct: 2,
-      ok: 'Richtig! m = ρ · V = 3 · 50 = 150 g.',
-      no: 'm = ρ · V = 3 · 50 = 150 g. Dichte mal Volumen — nicht addieren!',
-      tip: 'm = 3 g/cm³ × 50 cm³ = 150 g',
+      ok: 'Richtig! V = 100·π·20 = 2 000π ≈ 6 283 cm³. Dann m = 1 · 6 283 ≈ 6 283 g ≈ 6,3 kg.',
+      no: 'V = r²·π·h = 100·π·20 = 2 000π ≈ 6 283 cm³. Dann m = ρ·V = 1 · 6 283 ≈ 6 283 g.',
+      tip: 'Schritt 1: V = 10²·π·20 = 6 283 cm³.  Schritt 2: m = 1 · 6 283 = 6 283 g',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'ku', catLabel: 'Dichte & Masse',
+      emoji: '🎱',
+      title: 'Masse einer Kugel berechnen',
+      body: `Das Schulbuch hat eine schöne Aufgabe: eine <strong>Billardkugel aus Elfenbein</strong>.<br><br>
+             Elfenbein hat die Dichte ρ = 1,8 g/cm³. Die Kugel hat den Durchmesser d = 6 cm.<br><br>
+             <strong>Achtung:</strong> Gegeben ist der Durchmesser d, nicht der Radius r!<br>
+             Zuerst umrechnen: r = d ÷ 2 = 3 cm`,
+      steps: [
+        { n: 1, text: 'r aus d berechnen: r = d ÷ 2 = 6 ÷ 2 = 3 cm' },
+        { n: 2, text: 'Volumen: V = 4/3 · π · r³ = 4/3 · π · 27 = 36π ≈ 113,1 cm³' },
+        { n: 3, text: 'Masse: m = ρ · V = 1,8 · 113,1 ≈ 203,6 g' },
+      ],
+      highlight: { type: 'green', title: '🎱 Ergebnis', text: 'Die Billardkugel wiegt ungefähr 203,6 g.\nZum Vergleich: Eine Stahlkugel gleicher Größe (ρ = 7,87 g/cm³) würde ≈ 890 g wiegen!' },
+      formel: { text: 'r = d ÷ 2  →  V = 4/3·π·r³  →  m = ρ·V', sub: 'Drei Schritte: Radius — Volumen — Masse' },
+    },
+    quiz: {
+      q: 'Eine Kugel hat Durchmesser d = 10 cm und Dichte ρ = 2,7 g/cm³ (Aluminium). Wie schwer ist sie?',
+      opts: [
+        'm ≈ 141,4 g',
+        'm ≈ 353,4 g',
+        'm ≈ 706,9 g',
+        'm ≈ 1 413,7 g'
+      ],
+      correct: 3,
+      ok: 'Richtig! r = 5 cm. V = 4/3·π·125 ≈ 523,6 cm³. m = 2,7 · 523,6 ≈ 1 413,7 g ≈ 1,4 kg.',
+      no: 'Zuerst r = d÷2 = 5 cm. Dann V = 4/3·π·5³ ≈ 523,6 cm³. Dann m = 2,7 · 523,6 ≈ 1 413,7 g.',
+      tip: 'Schritt 1: r = 5.  Schritt 2: V ≈ 523,6 cm³.  Schritt 3: m = 2,7 · 523,6 ≈ 1 413,7 g',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'g', catLabel: 'Dichte & Masse',
+      emoji: '🔄',
+      title: 'Volumen aus Masse berechnen (Umkehraufgabe)',
+      body: `Manchmal ist nicht das Volumen gesucht, sondern umgekehrt: Du kennst die Masse und die Dichte — und suchst das Volumen.<br><br>
+             Die Formel m = ρ · V lässt sich umformen:<br><br>
+             m = ρ · V &nbsp; → &nbsp; beide Seiten ÷ ρ &nbsp; → &nbsp; <strong>V = m ÷ ρ</strong><br><br>
+             Genauso kann man die Dichte berechnen, wenn Masse und Volumen bekannt sind:<br>
+             <strong>ρ = m ÷ V</strong>`,
+      steps: [
+        { n: '📌', text: '<strong>Masse gesucht:</strong>  m = ρ · V' },
+        { n: '📌', text: '<strong>Volumen gesucht:</strong>  V = m ÷ ρ' },
+        { n: '📌', text: '<strong>Dichte gesucht:</strong>  ρ = m ÷ V' },
+      ],
+      highlight: { type: 'yellow', title: '💡 Merkhilfe: Dreiecksregel', text: 'Schreibe m oben, ρ und V unten.\nAbgedeckte Größe = die anderen zwei (mal oder geteilt).\nm = ρ · V    ρ = m ÷ V    V = m ÷ ρ' },
+      formel: null,
+    },
+    quiz: {
+      q: 'Ein Eisenklumpen (ρ = 7,87 g/cm³) hat eine Masse von m = 1 000 g. Welches Volumen hat er?',
+      opts: [
+        'V ≈ 7 870 cm³',
+        'V ≈ 127,1 cm³',
+        'V ≈ 78,7 cm³',
+        'V ≈ 1 000 cm³'
+      ],
+      correct: 1,
+      ok: 'Richtig! V = m ÷ ρ = 1 000 ÷ 7,87 ≈ 127,1 cm³. Eisen ist sehr dicht — daher kleines Volumen.',
+      no: 'V = m ÷ ρ = 1 000 ÷ 7,87 ≈ 127,1 cm³. Formel umstellen: m = ρ·V → V = m ÷ ρ.',
+      tip: 'V = m ÷ ρ = 1 000 ÷ 7,87 ≈ 127,1 cm³',
+    }
+  },
+
+  // ─── GLEICHSEITIGE KÖRPER ─────────────────────────
+  {
+    learn: {
+      cat: 'z', catLabel: 'Zylinder',
+      emoji: '🎯',
+      title: 'Gleichseitiger Zylinder',
+      body: `Es gibt einen besonderen Zylinder: den <strong>gleichseitigen Zylinder</strong>.<br><br>
+             Bei ihm ist die Höhe genau genauso groß wie der Durchmesser:<br>
+             <strong>h = d = 2·r</strong><br><br>
+             Das ist wie eine Dose, die genauso hoch wie breit ist — z.B. manche Thunfischdosen oder kurze Blechdosen.<br><br>
+             Wenn du also r kennst, weisst du sofort auch h:`,
+      steps: [
+        { n: 1, text: 'r gegeben → d = 2·r (Durchmesser)' },
+        { n: 2, text: 'h = d = 2·r (Höhe = Durchmesser)' },
+        { n: 3, text: 'Jetzt kannst du V und O wie gewohnt ausrechnen' },
+      ],
+      highlight: { type: 'blue', title: '🎯 Gleichseitiger Zylinder', text: 'h = 2 · r = d\nV = r² · π · h = r² · π · 2r = 2 · r³ · π\nBeispiel: r = 8 cm → h = 16 cm → V = 1024π cm³' },
+      formel: { text: 'h = 2 · r    →    V = 2 · r³ · π', sub: 'Gleichseitiger Zylinder: Höhe = Durchmesser' },
+    },
+    quiz: {
+      q: 'Ein gleichseitiger Zylinder hat r = 5 cm. Was ist seine Höhe h?',
+      opts: ['h = 5 cm', 'h = 10 cm', 'h = 15 cm', 'h = 3,14 cm'],
+      correct: 1,
+      ok: 'Richtig! h = 2·r = 2·5 = 10 cm. Beim gleichseitigen Zylinder ist h = Durchmesser = 2r.',
+      no: 'h = 2·r = 2·5 = 10 cm. Beim gleichseitigen Zylinder gilt immer: Höhe = Durchmesser = 2·r.',
+      tip: 'Gleichseitig = h = d = 2·r',
+    }
+  },
+
+  {
+    learn: {
+      cat: 'k', catLabel: 'Kegel',
+      emoji: '🗼',
+      title: 'Gleichseitiger Kegel',
+      body: `Auch beim Kegel gibt es eine besondere Form: den <strong>gleichseitigen Kegel</strong>.<br><br>
+             Bei ihm ist die Mantellinie s genauso groß wie der Durchmesser d:<br>
+             <strong>s = d = 2·r</strong><br><br>
+             Stell dir eine spitze Eistüte vor, bei der die schräge Seite genau so lang ist wie die Breite unten.<br><br>
+             Wenn s bekannt ist, kann man h mit Pythagoras berechnen:`,
+      steps: [
+        { n: 1, text: 's = 2·r (Mantellinie = Durchmesser)' },
+        { n: 2, text: 'h = √(s² - r²) = √(4r² - r²) = √(3r²) = r·√3' },
+        { n: 3, text: 'Dann V und O wie gewohnt mit diesen Werten' },
+      ],
+      highlight: { type: 'red', title: '🗼 Gleichseitiger Kegel', text: 's = 2·r = d\nh = r · √3  (folgt aus Pythagoras)\nBeispiel: r = 11 cm → s = 22 cm → h = 11·√3 ≈ 19,05 cm' },
+      formel: { text: 's = 2 · r    |    h = r · √3', sub: 'Gleichseitiger Kegel: Mantellinie = Durchmesser' },
+    },
+    quiz: {
+      q: 'Ein gleichseitiger Kegel hat r = 6 cm. Wie lang ist die Mantellinie s?',
+      opts: ['s = 6 cm', 's = 12 cm', 's = 18 cm', 's = 3 cm'],
+      correct: 1,
+      ok: 'Richtig! s = 2·r = 2·6 = 12 cm. Beim gleichseitigen Kegel gilt s = Durchmesser = 2r.',
+      no: 's = 2·r = 2·6 = 12 cm. Beim gleichseitigen Kegel ist die Mantellinie immer gleich dem Durchmesser.',
+      tip: 'Gleichseitiger Kegel: s = d = 2·r',
     }
   },
 
@@ -705,9 +888,11 @@ const units = [
       title: 'Alle drei Körper verglichen',
       body: `Jetzt kennst du alle drei! Hier ein Vergleich:`,
       steps: [
-        { n: '🥫', text: '<strong>Zylinder:</strong> V = π·r²·h &nbsp;|&nbsp; O = 2π·r² + 2π·r·h' },
-        { n: '🍦', text: '<strong>Kegel:</strong> V = ⅓·π·r²·h &nbsp;|&nbsp; O = π·r² + π·r·s &nbsp;|&nbsp; s = √(r²+h²)' },
-        { n: '⚽', text: '<strong>Kugel:</strong> V = 4/3·π·r³ &nbsp;|&nbsp; O = 4·π·r²' },
+        { n: '🥫', text: '<strong>Zylinder:</strong> V = π·r²·h &nbsp;|&nbsp; M = 2·π·r·h &nbsp;|&nbsp; O = 2·r²·π + 2·π·r·h' },
+        { n: '🍦', text: '<strong>Kegel:</strong> V = ⅓·π·r²·h &nbsp;|&nbsp; M = r·π·s &nbsp;|&nbsp; O = r²·π + r·π·s &nbsp;|&nbsp; s = √(r²+h²)' },
+        { n: '⚽', text: '<strong>Kugel:</strong> V = 4/3·π·r³ &nbsp;|&nbsp; O = 4·π·r² = d²·π' },
+        { n: '🎯', text: '<strong>Gleichseitiger Zylinder:</strong> h = 2·r' },
+        { n: '🗼', text: '<strong>Gleichseitiger Kegel:</strong> s = 2·r, h = r·√3' },
       ],
       highlight: { type: 'yellow', title: '🧠 Merksatz', text: 'Zylinder = Münzstapel.\nKegel = ⅓ Zylinder (Sand-Experiment).\nKugel = 4 Apfelsinen-Kreise.' },
       formel: null,
@@ -763,9 +948,29 @@ let score = 0;
 let mistakes = 0;
 let answered = false;
 let lives = 3;
+// history: array of {uIdx, phase, score, mistakes, lives}
+let history = [];
+
+function saveHistory() {
+  history.push({ uIdx, phase, score, mistakes, lives });
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  const prev = history.pop();
+  uIdx = prev.uIdx;
+  score = prev.score;
+  mistakes = prev.mistakes;
+  lives = prev.lives;
+  answered = false;
+  updateLives();
+  document.getElementById('pScore').textContent = `⭐ ${score} Punkte`;
+  if (prev.phase === 'learn') showLearn(true);
+  else showQuiz(true);
+}
 
 function start() {
-  uIdx = 0; score = 0; mistakes = 0; lives = 3; answered = false;
+  uIdx = 0; score = 0; mistakes = 0; lives = 3; answered = false; history = [];
   document.getElementById('startScreen').style.display = 'none';
   document.getElementById('progressWrap').style.display = 'block';
   updateLives();
@@ -785,12 +990,12 @@ function updateLives() {
   l.textContent = ['❤️','❤️','❤️'].slice(0,lives).join('') + ['🖤','🖤','🖤'].slice(lives).join('');
 }
 
-function showLearn() {
+function showLearn(noHistory) {
+  if (!noHistory) saveHistory();
   phase = 'learn';
   updateProgress();
   const u = units[uIdx].learn;
   const catClass = {z:'z', k:'k', ku:'ku', g:'g'}[u.cat] || 'g';
-  const catColors = {z:['Zylinder','z'], k:['Kegel','k'], ku:['Kugel','ku'], g:['Grundlage','g']};
 
   let stepsHtml = '';
   if (u.steps) {
@@ -812,8 +1017,13 @@ function showLearn() {
     formelHtml = `<div class="formel-box">${u.formel.text}<small>${u.formel.sub}</small></div>`;
   }
 
+  const backBtn = (uIdx > 0 || history.length > 0)
+    ? `<button class="btn-back" onclick="goBack()">← Zurück</button>`
+    : '';
+
   const lc = document.getElementById('learnCard');
   lc.innerHTML = `
+    ${backBtn}
     <span class="learn-badge ${catClass}">${u.catLabel}</span>
     <div class="big-emoji">${u.emoji}</div>
     <div class="learn-title">${u.title}</div>
@@ -829,15 +1039,14 @@ function showLearn() {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function showQuiz() {
+function showQuiz(noHistory) {
+  if (!noHistory) saveHistory();
   phase = 'quiz';
   answered = false;
   updateProgress();
   const u = units[uIdx];
   const q = u.quiz;
   const letters = ['A','B','C','D'];
-
-  // shuffle options but keep track of correct
   const order = shuffle([0,1,2,3]);
 
   const optsHtml = order.map((origIdx, di) => `
@@ -849,6 +1058,7 @@ function showQuiz() {
 
   const qc = document.getElementById('quizCard');
   qc.innerHTML = `
+    <button class="btn-back" onclick="goBack()">← Zurück zur Erklärung</button>
     <span class="quiz-badge">❓ Frage</span>
     <div class="question-text">${q.q}</div>
     <div class="options" id="opts">${optsHtml}</div>
